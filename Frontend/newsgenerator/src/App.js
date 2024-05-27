@@ -57,14 +57,16 @@ justify-content:center;
 box-sizing: border-box; 
 `
 const TextForm = styled.textarea`
-  width: 60%;
+  width: 70%;
   height: 90%;
   padding: 2vw;
   border-radius: 10px;
   border-style: none;
   box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.25);
-
+  box-sizing: border-box; 
 `
+
+
 const GuideBanner = styled.a`
   width: 100%;
   background-color: transparent;  // 배경색 변경
@@ -79,7 +81,7 @@ const GuideBanner = styled.a`
 `;
 
 const BtnBox = styled.div`
-width: 72%;
+width: 75%;
 height: 90%;
 display: flex;
 justify-content: right; 
