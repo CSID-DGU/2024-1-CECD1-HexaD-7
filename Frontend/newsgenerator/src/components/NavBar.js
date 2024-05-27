@@ -17,6 +17,7 @@ const NavBarComponent = () => {
         <NavBarBtn text="주제 제안 기능" icon={corpus}/>
         </BtnComponent>
       </NavBar>
+
     )
 
 }
