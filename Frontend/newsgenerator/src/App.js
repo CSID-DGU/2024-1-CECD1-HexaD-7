@@ -1,11 +1,32 @@
-import React from 'react'
+import React, {useState} from 'react'
 import styled from 'styled-components'
 import NavBarComponent from './components/NavBar';
 import logo from './images/logo.png';
-import inputFile from './images/inputFile.png';
+import check from './images/check.png';
+import nocheck from './images/nocheck.png';
+import clip from './images/clip.png';
 import FormOpBtn from './components/FormOpBtn';
 
 function App() {
+
+  const [imagePath, setImagePath] = useState(nocheck);
+  const[fileName, setFileName] = useState('파일을 선택해주세요.')
+
+
+  const handleCheckboxChange = (event) => {
+    setImagePath(event.target.checked ? check:nocheck); 
+  };
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if(file){
+      setFileName(file.name);
+    }else{
+      setFileName('파일을 선택해주세요.');
+    }
+  }
+
+
   return (
     <Frame>
       <NavBarComponent />
@@ -25,18 +46,32 @@ function App() {
         </TextBox>
         <BtnBox>
         <label for="fileInput">
-              <img 
-                src={inputFile}
-                alt="Upload File" 
-                style={{ cursor: 'pointer', width: "30vw" }}
-              />
-          <InputFile type="file" id="fileInput" name="userFile" accept=".jpg, .jpeg, .png" />
+          <Filename>
+            {fileName}<span><img src={clip} style={{width: "1.2vw", margin: "0vw 0.5vw"}}/></span>
+            </Filename>
+          <InputFile 
+          type="file" 
+          id="fileInput" 
+          name="userFile" 
+          accept=".jpg, .jpeg, .png"
+          onChange={handleFileChange} />
           </label>
           <FormOpBtn />
-          <SubmitBtn type="submit">기사 생성</SubmitBtn>
-        </BtnBox>
-
-        
+        </BtnBox>      
+        <BottomBox>
+        <div style={{display: "flex", alignItems:"center"}}>
+          <TextLabel for="factcheck">팩트체크 하이라이팅 여부</TextLabel>
+            <input type="checkbox" 
+            id='factcheck' name='factcheck' 
+            style={{display:"none"}}
+            onChange={handleCheckboxChange}
+            />
+            <label htmlFor="factcheck">
+              <img src={imagePath} alt="Checkbox Image" style={{width: "2vw", margin: "0vw 1vw"}} />
+            </label>
+        </div>
+        <SubmitBtn type="submit">기사 생성</SubmitBtn>  
+        </BottomBox>
       </SubmitForm>
       </div>
       </MainBox>
@@ -45,17 +80,42 @@ function App() {
   );
 }
 
+const Filename = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content:flex-end;
+  background-color: #F5F6FA;
+  border-style: solid;
+  border-color: #D9D9D9;
+  border-width: 0.5px;
+  font-size:1vw;
+  border-radius:0.5vw;
+  padding: 0.2vw 3vw;
+  margin: 0vw 0vw 1vw 0vw;
+  box-sizing: border-box; 
+`
+
+const BottomBox = styled.div`
+width: 50vw;
+display: flex;
+flex-direction: row;
+//align-items:flex-end;
+justify-content: space-between;
+padding: 0vw 2vw 1vw 2vw;
+box-sizing: border-box; 
+margin: 2vw auto; 
+`
 const SubmitBtn = styled.button`
-  width: 7vw;
-  height: 3vw;
+  width: 6vw;
+  height: 2.7vw;
   background-color: #0089CF;
   color: white;
   font-weight:bold;
+  font-size: 0.9vw;
   border-radius: 2vw;
   border-style:none;
-  font-size: 1vw;
   box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.25);
-  margin: 1vw 0vw 0vw 0vw;
   box-sizing: border-box;
 `
 const SubmitForm = styled.form`
@@ -75,11 +135,13 @@ box-sizing: border-box;
 `
 const InputFile = styled.input`
   display:none;
+  margin: 0vw 0vw 0.5vw 0vw;
 `
 
 const TextLabel = styled.label`
   font-size: 1vw;
-  margin: 0vw 0vw 1vw 0vw;
+  font-weight: bold;
+  margin: 0.5vw 0vw 1vw 0vw;
   selfAlign: left;
 `
 const Frame = styled.div`
@@ -141,7 +203,7 @@ width: 50vw;
 display: flex;
 flex-direction: column;
 align-items:flex-end;
-padding: 3vw;
+padding: 2vw 2vw 0vw 2vw;
 box-sizing: border-box; 
 margin: 0 auto; // 자동 마진을 사용하여 좌우 중앙 정렬
 `
