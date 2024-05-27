@@ -20,8 +20,8 @@ const BtnComponent = styled.div`
     border-width:1px;
     border-style: solid;
     border-color: #0089CF;
-    width: 30vw;
-    height: 2.5vw;
+    width: 28vw;
+    height: 2vw;
     display:flex;
     background-color: #EBEDFA;
 `
