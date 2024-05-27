@@ -26,16 +26,6 @@ function App() {
   );
 }
 
-const BtnBox = styled.div`
-width: 72%;
-height: 90%;
-display: flex;
-justify-content: right; 
-padding: 3vw;
-box-sizing: border-box; 
-margin: 0 auto; // 자동 마진을 사용하여 좌우 중앙 정렬
-`
-
 const Frame = styled.div`
 width:95vw;
 height: 50vw; 
@@ -75,7 +65,7 @@ const TextForm = styled.textarea`
   box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.25);
 
 `
-const GuideBanner = styled.div`
+const GuideBanner = styled.a`
   width: 100%;
   background-color: transparent;  // 배경색 변경
   align-items: right;
@@ -84,9 +74,19 @@ const GuideBanner = styled.div`
   font-weight: bold;
   text-align: right;
   font-size: 1vw;
-  color: #0089CF;
-  
+  color: #0089CF; 
+  cursor: pointer;
 `;
+
+const BtnBox = styled.div`
+width: 72%;
+height: 90%;
+display: flex;
+justify-content: right; 
+padding: 3vw;
+box-sizing: border-box; 
+margin: 0 auto; // 자동 마진을 사용하여 좌우 중앙 정렬
+`
 
 
 
