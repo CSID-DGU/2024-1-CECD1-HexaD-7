@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import NavBarComponent from './components/NavBar';
 import logo from './images/logo.png';
+import FormOpBtn from './components/FormOpBtn';
 //import logo from './images/logo.png';
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
         <TextForm />
       </TextBox>
       </MainBox>
+      <FormOpBtn />
     </Frame>
 
   );
