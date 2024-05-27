@@ -16,7 +16,7 @@ const BtnComponent = styled.div`
     display:grid;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    border-radius: 10px;
+    border-radius: 1vw;
     border-width:1px;
     border-style: solid;
     border-color: #0089CF;
@@ -27,7 +27,7 @@ const BtnComponent = styled.div`
 `
 const OptionBtn = styled.button`
 width: 100%;
-border-radius: 10px;
+border-radius: 1vw;
 border-style: none;
 border-color: transparent;
 background-color:transparent;
