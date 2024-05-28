@@ -1,16 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-
-import Main from './pages/Main';
-
+import App from './App';
 import reportWebVitals from './reportWebVitals';
 import UserLogin from './pages/UserLogin';
-
+import {BrowserRouter} from 'react-router-dom'
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <UserLogin />
-  </React.StrictMode>
+  
+      <App />
+
 );
 
 // If you want to start measuring performance in your app, pass a function
