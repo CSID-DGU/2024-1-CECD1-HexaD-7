@@ -15,7 +15,7 @@ const UserLogin =() => {
 
     const confirm = "240528";
     const accessCodeCheckHandler = () => {
-        const accessCodeRegex = /^[a-z\d!@*&-_]{8,16}$/;
+        const accessCodeRegex = /^[a-z\d!@*&-_]{6}$/;
         if (accessCode === "") {
           setAccessError('access 코드를 입력해주세요.');
           return false;
@@ -26,9 +26,11 @@ const UserLogin =() => {
             setAccessError('');
           setConfirmError('Access Code가 일치하지 않습니다.');
           return false;
-        } 
-        alert("접속에 성공하였습니다!");
-        navigate('/main');
+        } else{
+            alert("접속에 성공하였습니다!");
+            navigate('/main');
+        }
+        
       }
 
 
@@ -81,7 +83,7 @@ outline: none;
 `;
 
 
-const LoginBtn = styled.div`
+const LoginBtn = styled.button`
 width:30vw;
 height: 3.5vw;
 background-color: #B6B6B6;
