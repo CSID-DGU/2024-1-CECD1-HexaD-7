@@ -1,13 +1,13 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
-import NavBarComponent from './components/NavBar'
-import logo from './images/logo.png';
-import check from './images/check.png';
-import nocheck from './images/nocheck.png';
-import clip from './images/clip.png';
-import FormOpBtn from './components/FormOpBtn';
+import NavBarComponent from '../components/NavBar';
+import logo from '../images/logo.png';
+import check from '../images/check.png';
+import nocheck from '../images/nocheck.png';
+import clip from '../images/clip.png';
+import FormOpBtn from '../components/FormOpBtn';
 
-function App() {
+function Main() {
 
   const [imagePath, setImagePath] = useState(nocheck);
   const[fileName, setFileName] = useState('파일을 선택해주세요.')
@@ -208,4 +208,4 @@ box-sizing: border-box;
 margin: 0 auto; // 자동 마진을 사용하여 좌우 중앙 정렬
 `
 
-export default App;
+export default Main;
