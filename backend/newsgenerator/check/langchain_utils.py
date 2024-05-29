@@ -1,19 +1,32 @@
-# check/langchain_utils.py
-from langchain import OpenAI
+# check/llm_utils.py
+import torch
+from transformers import AutoTokenizer, AutoModelForCausalLM
+from langchain.chains import LLMChain
+from langchain.prompts import PromptTemplate
+from langchain.llms import HuggingFaceTransformers
 
-class SpellChecker:
-    def __init__(self, api_key):
-        self.api = OpenAI(api_key=api_key)
+model_id = 'MLP-KTLim/llama-3-Korean-Bllossom-8B'
 
-    def check_spelling(self, text):
-        # OpenAI API에 텍스트를 전송하여 맞춤법 검사
-        response = self.api.Completion.create(
-            engine="davinci-codex",
-            prompt=f"Check the spelling and grammar of the following article: {text}",
-            max_tokens=1024,
-            n=1,
-            stop=None,
-            temperature=0.7,
-        )
-        return response.choices[0].text.strip()
+tokenizer = AutoTokenizer.from_pretrained(model_id)
+model = AutoModelForCausalLM.from_pretrained(
+    model_id,
+    torch_dtype=torch.bfloat16,
+    device_map="auto",
+)
+model.eval()
 
+llm = HuggingFaceTransformers(model=model, tokenizer=tokenizer)
+
+prompt_template = PromptTemplate(
+    input_variables=["article_title", "article_content"],
+    template="Provide feedback on the following article:\n\nTitle: {article_title}\nContent: {article_content}\n"
+)
+
+feedback_chain = LLMChain(llm=llm, prompt=prompt_template)
+
+def generate_feedback(article_title, article_content):
+    feedback = feedback_chain.run({
+        "article_title": article_title,
+        "article_content": article_content
+    })
+    return feedback
