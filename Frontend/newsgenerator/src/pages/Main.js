@@ -27,6 +27,8 @@ function Main() {
   }
 
 
+
+
   return (
     <Frame>
       <NavBarComponent />
