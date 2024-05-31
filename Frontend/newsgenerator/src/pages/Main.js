@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useRef} from 'react'
 import styled from 'styled-components'
 import NavBarComponent from '../components/NavBar';
 import logo from '../images/logo.png';
@@ -6,11 +6,16 @@ import check from '../images/check.png';
 import nocheck from '../images/nocheck.png';
 import clip from '../images/clip.png';
 import FormOpBtn from '../components/FormOpBtn';
+import axios from 'axios';
+import API from '../api/axios'; 
 
 function Main() {
 
   const [imagePath, setImagePath] = useState(nocheck);
-  const[fileName, setFileName] = useState('파일을 선택해주세요.')
+  const[fileName, setFileName] = useState('파일을 선택해주세요.');
+  const textInputRef = useRef(null);
+  const fileInputRef = useRef(null);
+  const factCheckRef = useRef(null);
 
 
   const handleCheckboxChange = (event) => {
@@ -26,6 +31,30 @@ function Main() {
     }
   }
 
+  const handleSubmit = async(event) => {
+    event.preventDefault();
+    const formData = new formData;
+
+    formData.append('research_info', textInputRef.current.value);
+    //얘는 선택 옵션
+    if (fileInputRef.current.files[0]) {
+      formData.append('file', fileInputRef.current.files[0]);
+    }
+    formData.append('article_type', '스트레이트기사'); //예시로 아무거나 설정
+    formData.append('fact_check_highlight', factCheckRef.current.checked);
+
+    try{
+      const response = await API.post('api/generate-article', formData,{
+        headers:{
+          'Content-Type' : 'multipart/form-data',
+        },
+      });
+      console.log('Server resonse: ',response.data);
+    }catch(error){
+      console.log('Error sending data to the server: ', error);
+    }
+  };
+
 
 
 
@@ -38,36 +67,38 @@ function Main() {
         <img src={logo} alt="Main Logo"style={{width: "15%"}}/>
       </TitleBox>
       <div style={{display:"flex", justifyContent:"center"}}>
-      <SubmitForm 
-      action="/dummy" 
-      method="POST" 
-      enctype="multipart/form-data">
+      <SubmitForm onSubmit={handleSubmit} enctype="multipart/form-data">
         <TextBox>
-          <TextLabel for="coverage info">기사 작성에 필요한 취재정보를 입력하세요.</TextLabel>
-          <TextForm type="text" id="coverage info" required/>
+          <TextLabel htmlFor="coverage info">기사 작성에 필요한 취재정보를 입력하세요.</TextLabel>
+          <TextForm ref={textInputRef} id="coverage info" required />
         </TextBox>
         <BtnBox>
-        <label for="fileInput">
+        <label htmlFor="fileInput">
           <Filename>
             {fileName}<span><img src={clip} style={{width: "1.2vw", margin: "0vw 0.5vw"}}/></span>
             </Filename>
-          <InputFile 
-          type="file" 
-          id="fileInput" 
-          name="userFile" 
-          accept=".jpg, .jpeg, .png"
-          onChange={handleFileChange} />
+            <InputFile
+                  ref={fileInputRef}
+                  type="file"
+                  id="fileInput"
+                  name="userFile"
+                  accept=".jpg, .jpeg, .png"
+                  onChange = {handleFileChange}
+                  />
           </label>
           <FormOpBtn />
         </BtnBox>      
         <BottomBox>
         <div style={{display: "flex", alignItems:"center"}}>
-          <TextLabel for="factcheck">팩트체크 하이라이팅 여부</TextLabel>
-            <input type="checkbox" 
-            id='factcheck' name='factcheck' 
-            style={{display:"none"}}
-            onChange={handleCheckboxChange}
-            />
+          <TextLabel htmlFor="factcheck">팩트체크 하이라이팅 여부</TextLabel>
+          <input
+                  ref={factCheckRef}
+                  type="checkbox"
+                  id='factcheck'
+                  name='factcheck'
+                  style={{ display: "none" }}
+                  onChange={handleCheckboxChange}
+                />
             <label htmlFor="factcheck">
               <img src={imagePath} alt="Checkbox Image" style={{width: "2vw", margin: "0vw 1vw"}} />
             </label>
