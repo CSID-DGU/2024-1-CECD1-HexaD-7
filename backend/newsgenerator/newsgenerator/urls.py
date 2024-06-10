@@ -21,4 +21,6 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path('userlogin/', include('userlogin.urls')), #userlogin 앱의 URL 포함
     path('api/feedback/', include('feedback.urls')),  # feedback 앱의 URL 포함
+    path('savegeneratedarticle/', include('savegeneratedarticle.urls')),
+    path('articlegenerator/', include('articlegenerator.urls')),
 ]
