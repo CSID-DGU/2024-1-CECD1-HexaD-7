@@ -168,13 +168,13 @@ const BubbleTwo = styled.div`
     background-color: #0089CF;
     color: #FFFFFF;
     font-weight: bold;
-    border-radius: 50px 35px 0px 50px;
+    border-radius: 35px 35px 0px 35px;
     margin: 7vw 3vw 0vw 3vw;
     display: flex;
     flex-direction: column;
-    padding: 1vw;
+    padding: 1.8vw;
     box-sizing: border-box;
-    font-size: 1.8vw;
+    font-size: 1.5vw;
     & > div{
       cursor:pointer;
     }

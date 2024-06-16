@@ -4,6 +4,7 @@ import Main from './pages/Main'; // 메인 페이지 컴포넌트 이름은 프�
 import MainLoading from './pages/MainLoading';
 import MainOutput from './pages/MainOutput';
 import TopicGenerator1 from './pages/TopicGenerator1';
+import Feedback from './pages/Feedback';
 function App() {
   return (
     <BrowserRouter>
@@ -12,6 +13,7 @@ function App() {
         <Route path="/main" element={<Main />} />
         <Route path="/mainloading" element={<MainLoading />} />
         <Route path="/mainoutput" element = {<MainOutput />}/>
+        <Route path="/feedback" element={<Feedback />} />
         <Route path="/topicgenerator1" element={<TopicGenerator1 />} />
       </Routes>
     </BrowserRouter>
