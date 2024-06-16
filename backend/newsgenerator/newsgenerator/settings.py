@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     "userlogin",
     "textprocessor",
     "corsheaders",
-
+    "feedback"
 ]
 
 MIDDLEWARE = [

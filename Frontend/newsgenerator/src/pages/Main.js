@@ -1,4 +1,5 @@
 import React, {useState, useRef} from 'react'
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components'
 import NavBarComponent from '../components/NavBar';
 import logo from '../images/logo.png';
@@ -6,16 +7,20 @@ import check from '../images/check.png';
 import nocheck from '../images/nocheck.png';
 import clip from '../images/clip.png';
 import FormOpBtn from '../components/FormOpBtn';
-import axios from 'axios';
+import { responseState, loadingState } from '../api/state.js';
 import API from '../api/axios'; 
-
+import { useRecoilState } from 'recoil';
 function Main() {
-
+  const navigate = useNavigate();
   const [imagePath, setImagePath] = useState(nocheck);
   const[fileName, setFileName] = useState('파일을 선택해주세요.');
   const textInputRef = useRef(null);
   const fileInputRef = useRef(null);
   const factCheckRef = useRef(null);
+
+  const [loading, setLoading] = useRecoilState(loadingState);
+  const [, setResponse] = useRecoilState(responseState);
+
 
 
   const handleCheckboxChange = (event) => {
@@ -31,29 +36,32 @@ function Main() {
     }
   }
 
-  const handleSubmit = async(event) => {
+  
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const formData = new formData;
-
+    const formData = new FormData();
+  
     formData.append('research_info', textInputRef.current.value);
-    //얘는 선택 옵션
     if (fileInputRef.current.files[0]) {
       formData.append('file', fileInputRef.current.files[0]);
     }
-    formData.append('article_type', '스트레이트기사'); //예시로 아무거나 설정
+    formData.append('article_type', '스트레이트기사');
     formData.append('fact_check_highlight', factCheckRef.current.checked);
-
-    try{
-      const response = await API.post('api/generate-article', formData,{
-        headers:{
-          'Content-Type' : 'multipart/form-data',
-        },
-      });
-      console.log('Server resonse: ',response.data);
-    }catch(error){
+    setLoading(true);
+    navigate("/mainloading");
+    
+    try {
+      const response = await API.post('textprocessor/api/generate-article', formData);
+      setResponse(response.data);
+      navigate("/mainoutput")
+      console.log('Server response: ', response.data);
+    } catch (error) {
       console.log('Error sending data to the server: ', error);
+    }finally{
+      setLoading(false);
     }
   };
+  
 
 
 
@@ -164,7 +172,6 @@ justify-content:center;
 align-items:center;
 padding: 3vw 0vw 0vw 1vw;
 box-sizing: border-box; 
-
 `
 const InputFile = styled.input`
   display:none;
