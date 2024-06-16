@@ -19,7 +19,7 @@ class GenerateArticle(APIView):
 
         ##########################################################
         # 데이터 처리 로직
-        ngrok_url = 'https://1fb2-34-74-131-44.ngrok-free.app/receive-research-info'
+        ngrok_url = 'https://b930-34-75-221-172.ngrok-free.app/receive-research-info'
 
         data_payload = {
             'research_info': research_info,
