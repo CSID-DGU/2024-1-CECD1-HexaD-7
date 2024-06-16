@@ -89,7 +89,7 @@ function TopicGenerator1() {
         second_category: categories.second_category,
       });
       console.log("Server response: ", response.data);
-      navigate("/completetopicgeneration");
+      navigate("/topicgenerator");
     } catch(error){
       console.log('서버 전송 오류: ', error);
     }
