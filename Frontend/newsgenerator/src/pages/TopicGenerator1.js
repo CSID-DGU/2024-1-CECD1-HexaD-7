@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react'
+import React, {useState, useEffect} from 'react'
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components'
 import NavBarComponent from '../components/NavBar';
@@ -6,59 +6,94 @@ import logo from '../images/logo.png';
 import { responseState, loadingState } from '../api/state.js';
 import API from '../api/axios'; 
 import { useRecoilState } from 'recoil';
+import {categoryState} from '../api/state';
 import submitBtn from '../images/submitBtn.png';
 function TopicGenerator1() {
+  const options2=[];
   const navigate = useNavigate();
-  const textInputRef = useRef(null);
-  const fileInputRef = useRef(null);
-  const factCheckRef = useRef(null);
+  const [categories, setCategories] = useRecoilState(categoryState);
+  
+  function getOption2BasedOnFirstCategory(first_category){
+    if (first_category === '건강정보'){
+      return ['건강 일반', '먹거리 건강', '한방'];
+      
+    } else if (first_category === '산업정보'){
+      return ['제약바이오', '식품/건강기능식품', '의료기기'];
+    } else {
+      return ['성형', '피부미용', '화장품'];
+    }
+  }
+  
 
-  const [loading, setLoading] = useRecoilState(loadingState);
-  const [, setResponse] = useRecoilState(responseState);
+  const handleFirstCategorySelect = (option) => {
+    const newOptions2 = getOption2BasedOnFirstCategory(option);
+    console.log("New options2 prepared:", newOptions2);
+  
+    setCategories(prev => ({
+      ...prev,
+      first_category: option,
+      options2: newOptions2
+    }));
+  }
+  useEffect(() => {
+    console.log("Updated options2:", categories.options2);
+  }, [categories.options2]);  // options2가 변경될 때마다 이 useEffect가 실행됩니다.
+  
+  
+
+  const handleSecondCategorySelect = async (option) => {
+    setCategories(prev => ({ ...prev, second_category: option }));
+
+    // 서버에 요청 보내기
+    try {
+      const response = await API.post('/api/select-category', {
+        first_category: categories.first_category,
+        second_category: option,
+      });
+      console.log("Server response:", response.data);
+
+    } catch (error) {
+      console.error('Error sending data to the server:', error);
+    }
+  };
+
+  
+
 
   const Bubble1 =({text}) => {
     return <BubbleOne>{text}</BubbleOne>
   }
 
-  const Bubble2 =({text1, text2, text3}) => {
-    return <BubbleTwo>
-                <div style={{display:"flex", flexDirection:"column", marginRight:"2vw"}}>{text1}</div>
-                <StyledLine />
-                <div style={{display:"flex", flexDirection:"column", marginRight:"2vw"}}>{text2}</div>
-                <StyledLine />
-                <div style={{display:"flex", flexDirection:"column", marginRight:"2vw"}}>{text3}</div>
-           </BubbleTwo>
+  const Bubble2 = ({ onSelectCategory, options }) => {
+    //const options = ['건강정보', '산업정보', '뷰티'];
+    return (
+      <BubbleTwo>
+        {options.map((option, index) => (
+          <div key={index} onClick={() => onSelectCategory(option)}
+               style={{ padding: "0vw 2vw", boxSizing: 'border-box' }}>
+            {option}{' →'}<br />
+            {index < options.length - 1 && <StyledLine />}
+          </div>
+        ))}
+      </BubbleTwo>
+    );
   }
 
-  
-  const handleSubmit = async (event) => {
+
+  const handleSubmit = async(event) => {
     event.preventDefault();
-    const formData = new FormData();
-  
-    formData.append('research_info', textInputRef.current.value);
-    if (fileInputRef.current.files[0]) {
-      formData.append('file', fileInputRef.current.files[0]);
-    }
-    formData.append('article_type', '스트레이트기사');
-    formData.append('fact_check_highlight', factCheckRef.current.checked);
-    setLoading(true);
-    navigate("/mainloading");
-    
-    try {
-      const response = await API.post('textprocessor/api/generate-article', formData);
-      setResponse(response.data);
-      navigate("/mainoutput")
-      console.log('Server response: ', response.data);
-    } catch (error) {
-      console.log('Error sending data to the server: ', error);
-    }finally{
-      setLoading(false);
+
+    try{
+      const response = await API.post('/api/select-second-category', {
+        first_category: categories.first_category,
+        second_category: categories.second_category,
+      });
+      console.log("Server response: ", response.data);
+      navigate("/completetopicgeneration");
+    } catch(error){
+      console.log('서버 전송 오류: ', error);
     }
   };
-  
-
-
-
 
   return (
     <Frame>
@@ -74,18 +109,29 @@ function TopicGenerator1() {
         </div>
         <div style={{ fontSize: '1.5vw',minHeight:"100%", display:"flex", flexDirection:"bottom"}}>
         <TopicFrame onSubmit={handleSubmit} enctype="multipart/form-data">
-        <div style={{display:"flex", minHeight: "100%"}}>
+        <div>
+        {/* <div style={{display:"flex", minHeight: "75%"}}>
         <Bubble1 text={'첫번째 카테고리를 선택해주세요.'}/>
-         <Bubble2 text1={'건강정보 →'} text2={'산업정보 →'} text3={'뷰티 →'}/>
-         </div>
-         <div style={{display:"flex", justifyContent:"center", height:"10vw"}}>
-        <form style={{minWidth:"100%", minHeight: "5vw", display:"flex", justifyContent:"center"}}>
+        <Bubble2 options={categories.options2} onSelectCategory ={handleFirstCategorySelect} />
+        </div> */}
+        <div style={{display:"flex", minHeight: "75%"}}>
+        <Bubble1 text={categories.first_category ? "두번째 카테고리를 선택해주세요." : "첫번째 카테고리를 선택해주세요."} />
+
+        {categories.first_category ? (
+                    <Bubble2 options={categories.options2} onSelectCategory={handleSecondCategorySelect} />
+                  ) : (
+                    <Bubble2 options={['건강정보', '산업정보', '뷰티']} onSelectCategory={handleFirstCategorySelect} />
+                  )}
+                  </div>
+        <div style={{display:"flex", justifyContent:"center", height:"10vw"}}>
+        <form style={{minWidth:"100%", height: "4.5vw", display:"flex", justifyContent:"center"}}>
             <input style={{padding:"0vw 2vw", height:"60", width:"85%", margin:"0.7vw", boxSizing:"border-box", borderRadius:"5vw", border:"none", backgroundColor:"#E7E7E7"}}></input>
             <button style={{background:"transparent", border:"none"}}>
             <img src={submitBtn} alt="Submit Image" style={{width: "2vw", margin: "0vw 1vw"}} />
             </button>
         </form>
       </div>
+         </div>
         </TopicFrame>
         </div>
       </div>
@@ -98,10 +144,11 @@ function TopicGenerator1() {
 
 
 const StyledLine = styled.hr`
-    height: 0.1vw; // Adjust thickness
-    background0-color: white; // Line color
+    height: 0.05vw; 
+    background0-color: white; 
     color:white;
-    margin: 1vw 0; // Spacing around the line
+    min-width: 100%;
+    margin: 0.5vw 0vw;
 `;
 
 const BubbleOne = styled.div`   
@@ -117,17 +164,20 @@ const BubbleOne = styled.div`
 const BubbleTwo = styled.div`
     text-align: right;
     width: 30vw;
-    height: 15vw;
+    height: 12vw;
     background-color: #0089CF;
     color: #FFFFFF;
     font-weight: bold;
     border-radius: 50px 35px 0px 50px;
-    margin: 11vw 3vw 3vw 3vw;
+    margin: 7vw 3vw 0vw 3vw;
     display: flex;
     flex-direction: column;
-    padding: 2vw;
+    padding: 1vw;
     box-sizing: border-box;
     font-size: 1.8vw;
+    & > div{
+      cursor:pointer;
+    }
 `
 
 const Frame = styled.div`

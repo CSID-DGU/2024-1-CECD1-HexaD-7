@@ -10,3 +10,7 @@ export const loadingState = atom({
   default: false,
 });
 
+export const categoryState = atom({
+  key: 'categoryState',
+  default: {first_category: '', second_category: '', options2:[]},
+});
