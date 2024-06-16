@@ -1,6 +1,8 @@
 {
   "dependencies": {
+    "aaxios": "^0.18.1",
     "axios": "^1.7.2",
+    "recoil": "^0.7.7",
     "styled-components": "^6.1.11"
   }
 }
