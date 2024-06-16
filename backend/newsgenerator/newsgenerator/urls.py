@@ -23,5 +23,6 @@ urlpatterns = [
     path('textprocessor/', include('textprocessor.urls')),
     path('userlogin/', include('userlogin.urls')), #userlogin 앱의 URL 포함
     path('api/feedback/', include('feedback.urls')),  # feedback 앱의 URL 포함
-
+    path('userlogin/', include('userlogin.urls')), #userlogin 앱의 URL 포함
+    path('api/feedback/', include('feedback.urls')),  # feedback 앱의 URL 포함
 ]
