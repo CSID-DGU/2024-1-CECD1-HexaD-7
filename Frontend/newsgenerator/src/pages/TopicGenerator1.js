@@ -3,11 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components'
 import NavBarComponent from '../components/NavBar';
 import logo from '../images/logo.png';
+import { responseState, loadingState } from '../api/state.js';
 import API from '../api/axios'; 
 import { useRecoilState } from 'recoil';
 import {categoryState} from '../api/state';
 import submitBtn from '../images/submitBtn.png';
-
 
 function TopicGenerator1() {
   const options2=[];
@@ -38,6 +38,7 @@ function TopicGenerator1() {
   }
 
 
+
   useEffect( ()=> {
     if (categories.first_category && categories.second_category){
       async function sendData(){
@@ -56,9 +57,29 @@ function TopicGenerator1() {
     }
   }, [categories]);
 
+
+    
+
+  useEffect(() => {
+    console.log("Updated options2:", categories.options2);
+  }, [categories.options2]);  // options2가 변경될 때마다 이 useEffect가 실행됩니다.
+  
+  
+
   const handleSecondCategorySelect = async (option) => {
     setCategories(prev => ({ ...prev, second_category: option }));
-    
+
+    // 서버에 요청 보내기
+    try {
+      const response = await API.post('/api/select-category', {
+        first_category: categories.first_category,
+        second_category: option,
+      });
+      console.log("Server response:", response.data);
+
+    } catch (error) {
+      console.error('Error sending data to the server:', error);
+    }
   };
 
   
@@ -114,7 +135,7 @@ function TopicGenerator1() {
         <div style={{ fontSize: '1.5vw',minHeight:"100%", display:"flex", flexDirection:"bottom"}}>
         <TopicFrame onSubmit={handleSubmit} enctype="multipart/form-data">
         <div>
-        
+
         <div style={{display:"flex", minHeight: "75%"}}>
         <Bubble1 text={categories.first_category ? "두번째 카테고리를 선택해주세요." : "첫번째 카테고리를 선택해주세요."} />
 
@@ -142,6 +163,7 @@ function TopicGenerator1() {
 
   );
 }
+
 
 
 const StyledLine = styled.hr`
@@ -197,6 +219,7 @@ const MainBox = styled.div`
   align-items: bottom; // 수직 방향으로 가운데 정렬
 `
 
+
 const TitleBox = styled.div`
   width: 100%;
   display: flex;
@@ -217,7 +240,6 @@ const TopicFrame = styled.div`
   flex-direction: column;
   
 `
-
 const GuideBanner = styled.a`
   width: 100%;
   background-color: transparent;  // 배경색 변경
