@@ -1,3 +1,5 @@
+
+
 """
 Django settings for newsgenerator project.
 
@@ -9,7 +11,7 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -23,9 +25,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-%g(x)m9i)6q(4(ok$k$9n9ih=l(#_$mo*c-oj!k%m8_4$6^!vt"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
+ALLOWED_HOSTS = ['e63b-61-72-17-104.ngrok-free.app', 'localhost', '127.0.0.1']
 
-ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -39,14 +41,12 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "userlogin",
-    "textprocessor",
-    "corsheaders",
-    "feedback"
+    "feedback",
+    "savegeneratedarticle",
+    "articlegenerator",
 ]
 
 MIDDLEWARE = [
-    "corsheaders.middleware.CorsMiddleware",
-    "django.middleware.common.CommonMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -55,9 +55,6 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
-
-CORS_ALLOW_ALL_ORIGINS = True
-
 
 ROOT_URLCONF = "newsgenerator.urls"
 
@@ -83,12 +80,25 @@ WSGI_APPLICATION = "newsgenerator.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+# Database
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.getenv('DB_NAME', 'articlegenerator_db'),
+        'USER': os.getenv('DB_USER', 'article_user'),
+        'PASSWORD': os.getenv('DB_PASSWORD', '1234'),
+        'HOST': os.getenv('DB_HOST', 'localhost'),
+        'PORT': os.getenv('DB_PORT', '3306'),
     }
 }
+
+ELASTICSEARCH_DSL = {
+    'default': {
+        'hosts': 'http://localhost:9200',
+        'http_auth': ('elastic', 'your_password')
+    },
+}
+
 
 
 # Password validation
