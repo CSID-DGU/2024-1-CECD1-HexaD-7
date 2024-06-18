@@ -11,6 +11,20 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+import os
+from dotenv import load_dotenv
+
+# .env 파일의 경로를 설정합니다.
+env_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env')
+print(f"Loading .env from: {env_path}")  # 경로 확인을 위한 출력
+
+load_dotenv(env_path)
+
+GPT_API_KEY = os.getenv('GPT_API_KEY')
+
+# 환경 변수가 올바르게 로드되었는지 확인합니다.
+print(f"Loaded GPT_API_KEY: {GPT_API_KEY}")
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -41,7 +55,8 @@ INSTALLED_APPS = [
     "userlogin",
     "textprocessor",
     "corsheaders",
-    "feedback"
+    "feedback",
+    "topicsuggestion",
 ]
 
 MIDDLEWARE = [
