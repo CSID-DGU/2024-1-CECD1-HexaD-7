@@ -42,7 +42,6 @@ function Feedbackoutput() {
         <TitleBox>
           <img src={logo} alt="Main Logo" style={{width: "15%"}}/>
         </TitleBox>
-        
       </MainBox>
     </Frame>
   );
@@ -84,6 +83,6 @@ const GuideBanner = styled.a`
   font-size: 1vw;
   color: #0089CF; 
   cursor: pointer;
-`;
+`
 
 export default Feedbackoutput;
