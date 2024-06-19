@@ -3,11 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import NavBarComponent from '../components/NavBar';
 import logo from '../images/logo.png';
-import feedback from '../images/feedback.png';
 import { responseState, loadingState } from '../api/state.js';
 import API from '../api/axios'; 
 import { useRecoilState } from 'recoil';
-import FormOpBtn from '../components/FormOpBtn';
 
 function Feedbackoutput() {
   const navigate = useNavigate();
@@ -51,40 +49,6 @@ function Feedbackoutput() {
 }
 
 
-
-
-const SubmitBtn = styled.button`
-    width: 30vw;
-    height: 4vw;
-    border:none;
-    border-radius: 1vw;
-    font-weight: bold;
-    font-size: 1.5vw;
-    color: white;
-    background-color:#0089CF;
-    box-sizing: border-box;
-    margin-top: 1vw;
-    margin-bottom: 7vw;
-`
-const TitleInput = styled.input`
-    border-radius: 1vw;
-    border:none;
-    background-color: #D9D9D9;
-    height: 3vw;
-    width: 30vw;
-    box-sizing: border-box;
-    padding: 0vw 2vw;
-`
-const ContentInput = styled.textarea`
-    box-sizing: border-box;
-    padding: 2vw 2vw;
-    border-radius: 1vw;
-    border:none;
-    background-color: #D9D9D9;
-    margin: 2vw 0vw;
-    width: 30vw;
-    height: 20vw;
-`
 
 const Frame = styled.div`
 width:95vw;
