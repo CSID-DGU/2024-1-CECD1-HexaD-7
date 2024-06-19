@@ -1,10 +1,11 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
+from backend.newsgenerator.savegeneratedarticle.documents import preprocess_and_index
 from savegeneratedarticle.models import Article
 from .serializers import ArticleSerializer
-from sqlalchemy import create_engine, text
-from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy import create_engine, text  # type: ignore
+from sqlalchemy.exc import SQLAlchemyError # type: ignore
 import os
 import warnings
 # from .documents import preprocess_and_index  # 주석 처리 (사용하지 않는 경우)
@@ -13,8 +14,8 @@ import warnings
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 # MySQL 데이터베이스 연결 설정
-user = 'article_user'
-password = '1234'
+user = 'root'
+password = '0000'
 host = 'localhost'  # 또는 다른 호스트
 database = 'articlegenerator_db'
 
@@ -30,9 +31,12 @@ def save_generated_article(request):
                 # articles 테이블의 현재 행 개수를 가져옴
                 result = connection.execute(text("SELECT COUNT(*) FROM articles"))
                 count = result.scalar()
-
+                print(f"현재 기사 수: {count}")
+                
+              
                 # 새로운 ID 할당
                 new_id = count + 1
+                print(f"새로운 기사 ID: {new_id}")
 
                 # Article 인스턴스를 생성하되, id 값을 직접 설정
                 article_instance = Article(
@@ -46,6 +50,7 @@ def save_generated_article(request):
                     subsection=serializer.validated_data['subsection']
                 )
                 article_instance.save()
+                print("Article 인스턴스가 저장됨")
 
                 # MySQL에 데이터 삽입
                 connection.execute(text(
@@ -61,10 +66,12 @@ def save_generated_article(request):
                     'section': article_instance.section,
                     'subsection': article_instance.subsection
                 })
+                print("MySQL에 데이터 삽입됨")
 
                 # 데이터베이스에 삽입된 데이터 확인 (Row 객체 활용)
                 result = connection.execute(text("SELECT * FROM articles WHERE id = :id"), {'id': new_id})
                 saved_article = result.fetchone()
+                print("데이터베이스에서 삽입된 데이터 확인")
 
                 if saved_article:
                     # Elasticsearch에 인덱싱 (필요한 경우 주석 해제)
@@ -72,7 +79,7 @@ def save_generated_article(request):
                     
                     # Row 객체를 딕셔너리로 변환하여 응답 데이터 구성
                     article_data = saved_article._asdict()
-
+                    print("Elasticsearch에 인덱싱됨")
                     return Response({"message": "성공"}, status=status.HTTP_201_CREATED)
                 else:
                     return Response({"message": "실패"}, status=status.HTTP_400_BAD_REQUEST)

@@ -85,8 +85,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': os.getenv('DB_NAME', 'articlegenerator_db'),
-        'USER': os.getenv('DB_USER', 'article_user'),
-        'PASSWORD': os.getenv('DB_PASSWORD', '1234'),
+        'USER': os.getenv('DB_USER', 'root'),
+        'PASSWORD': os.getenv('DB_PASSWORD', '0000'),
         'HOST': os.getenv('DB_HOST', 'localhost'),
         'PORT': os.getenv('DB_PORT', '3306'),
     }
@@ -95,7 +95,7 @@ DATABASES = {
 ELASTICSEARCH_DSL = {
     'default': {
         'hosts': 'http://localhost:9200',
-        'http_auth': ('elastic', 'your_password')
+        #'http_auth': ('elastic', 'your_password')
     },
 }
 
