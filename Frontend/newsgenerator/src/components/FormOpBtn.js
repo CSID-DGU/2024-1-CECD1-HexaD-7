@@ -1,28 +1,25 @@
 import React from 'react'
 import styled from 'styled-components'
 
-
-const FormOpBtn = () => {
+const FormOpBtn = ({ onOptionClick }) => {
     return (
         <BtnComponent>
-          <OptionBtn>스트레이트 기사</OptionBtn>
-          <OptionBtn>보도 기사</OptionBtn>
-          <OptionBtn>기획 기사</OptionBtn>
+          <OptionBtn onClick={() => onOptionClick("스트레이트 기사")}>스트레이트 기사</OptionBtn>
+          <OptionBtn onClick={() => onOptionClick("보도 기사")}>보도 기사</OptionBtn>
+          <OptionBtn onClick={() => onOptionClick("기획 기사")}>기획 기사</OptionBtn>
         </BtnComponent>
     )
 }
 
 const BtnComponent = styled.div`
-    display:grid;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     border-radius: 1vw;
     border-width:1px;
     border-style: solid;
     border-color: #0089CF;
-    width: 28vw;
+    width: 30vw;
     height: 2vw;
-    display:flex;
     background-color: #EBEDFA;
 `
 const OptionBtn = styled.button`
@@ -34,7 +31,7 @@ background-color:transparent;
 color: black;
 font-size: 1vw;
 font-weight: bold;
-&:hover{
+&:click{
   background-color:#0089CF;
   color: white;
 }
