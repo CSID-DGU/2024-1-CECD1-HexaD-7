@@ -3,14 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components'
 import NavBarComponent from '../components/NavBar';
 import logo from '../images/logo.png';
-import { responseState, loadingState } from '../api/state.js';
 import API from '../api/axios'; 
 import { useRecoilState } from 'recoil';
 import {categoryState} from '../api/state';
 import submitBtn from '../images/submitBtn.png';
 
 function TopicGenerator1() {
-  const options2=[];
   const navigate = useNavigate();
   const [categories, setCategories] = useRecoilState(categoryState);
   
@@ -43,11 +41,13 @@ function TopicGenerator1() {
     if (categories.first_category && categories.second_category){
       async function sendData(){
         try {
-          const response = await API.post('/api/select-category',{
+          const response = await API.post('topicsuggestion/select-second-category',{
             first_category: categories.first_category,
             second_category: categories.second_category,
+
           });
           console.log("server response: ",response.data);
+          navigate("/topicgenerator2", { state: { data: response.data } });
         }catch(error){
           console.log("categoreis: ", categories);
           console.error("Error sending data to the server", error);
@@ -55,7 +55,7 @@ function TopicGenerator1() {
       }
       sendData();
     }
-  }, [categories]);
+  }, [categories, navigate]);
 
 
     
@@ -71,7 +71,7 @@ function TopicGenerator1() {
 
     // 서버에 요청 보내기
     try {
-      const response = await API.post('/api/select-category', {
+      const response = await API.post('topicsuggestion/select-second-category', {
         first_category: categories.first_category,
         second_category: option,
       });
@@ -105,21 +105,6 @@ function TopicGenerator1() {
   }
 
 
-  const handleSubmit = async(event) => {
-    event.preventDefault();
-
-    try{
-      const response = await API.post('/api/select-second-category', {
-        first_category: categories.first_category,
-        second_category: categories.second_category,
-      });
-      console.log("Server response: ", response.data);
-      navigate("/topicgenerator");
-    } catch(error){
-      console.log('서버 전송 오류: ', error);
-    }
-  };
-
   return (
     <Frame>
       <NavBarComponent />
@@ -133,7 +118,7 @@ function TopicGenerator1() {
             헬스경향 카테고리 분류별 기사작성 주제를 재안해주는 AI 서비스입니다.
         </div>
         <div style={{ fontSize: '1.5vw',minHeight:"100%", display:"flex", flexDirection:"bottom"}}>
-        <TopicFrame onSubmit={handleSubmit} enctype="multipart/form-data">
+        <TopicFrame /*onSubmit={handleSubmit}*/ enctype="multipart/form-data">
         <div>
 
         <div style={{display:"flex", minHeight: "75%"}}>

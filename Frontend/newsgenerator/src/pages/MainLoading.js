@@ -2,8 +2,6 @@ import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
 import NavBarComponent from '../components/NavBar';
 import logo from '../images/logo.png';
-import API from '../api/axios';
-import Loading from '../components/Loading'; 
 import LoadingComponent from '../images/LoadingComponent.gif'
 function MainLoading() {
   const [seconds, setSeconds] = useState(0);

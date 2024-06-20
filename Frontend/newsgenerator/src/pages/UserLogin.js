@@ -232,7 +232,7 @@ const UserLogin = () => {
         setAccessCode(event.target.value);
     };
 
-    const confirm = "240528";
+    const confirm = "240528";/*
     const accessCodeCheckHandler = () => {
         const accessCodeRegex = /^[a-z\d!@*&-_]{6}$/;
         if (accessCode === "") {
@@ -260,7 +260,7 @@ const UserLogin = () => {
             navigate('/main');
         }
     };
-
+*/
     return (
         <Frame>
             <LoginBanner>
@@ -285,7 +285,7 @@ const UserLogin = () => {
                             {accessError && <p style={{ color: "red", fontSize: "1vw" }}>{accessError}</p>}
                             {confirmError && <p style={{ color: "red", fontSize: "1vw" }}>{confirmError}</p>}
                         </InputBox>
-                        <LoginBtn onClick={accessCodeCheckHandler}>
+                        <LoginBtn /*onClick={accessCodeCheckHandler}*/>
                             완료
                             <img src={basiccheck} alt="Checkbox Image" style={{ width: "2vw", margin: "0vw 1vw" }} />
                         </LoginBtn>

@@ -1,14 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import pencil from '../images/pencil.png';
 import document from '../images/document.png';
 import corpus from '../images/corpus.png';
 import logo from '../images/logo.png';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const NavBarComponent = () => {
-  const [activeBtn, setActiveBtn] = useState('');
+  const [activeBtn, setActiveBtn] = useState('generatearticle'); 
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    const pathToKeyMap = {
+      '/main': 'generatearticle',
+      '/feedback': 'feedback',
+      '/topicgenerator1': 'topicgenerator'
+    };
+    const currentKey = pathToKeyMap[location.pathname];
+    if (currentKey) {
+      setActiveBtn(currentKey);
+    }
+  }, [location.pathname]);
 
   const handleNavigate = (path, btnKey) => {
     setActiveBtn(btnKey);
@@ -18,8 +31,8 @@ const NavBarComponent = () => {
   return (
     <NavBar>
       <LogoImg src={logo} />
-      <div style={{textAlign: 'left', width: '100%'}}>
-        <p style={{fontSize: '1vw'}}>Menu</p>
+      <div style={{ textAlign: 'left', width: '100%' }}>
+        <p style={{ fontSize: '1vw' }}>Menu</p>
       </div>
       <BtnComponent>
         <NavBarBtn 
@@ -44,7 +57,6 @@ const NavBarComponent = () => {
     </NavBar>
   );
 }
-
 
 const NavBarBtn = ({ text, icon, onClick, isActive }) => {
   return (
@@ -73,10 +85,6 @@ const NavBarBtnStyle = styled.button`
     background-color: #0089CF;
     color: white;
   }
-    &:click {
-    background-color: #0089CF;
-    color: white;
-  }
 `;
 
 const BtnComponent = styled.div`
@@ -101,6 +109,5 @@ const NavBar = styled.div`
   height: 60vw;
   box-sizing: border-box;
 `;
-
 
 export default NavBarComponent;

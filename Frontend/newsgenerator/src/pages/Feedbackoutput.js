@@ -6,33 +6,12 @@ import logo from '../images/logo.png';
 import { responseState, loadingState } from '../api/state.js';
 import API from '../api/axios'; 
 import { useRecoilState } from 'recoil';
+import LoadingComponent from '../images/LoadingComponent.gif'
 
 function Feedbackoutput() {
-  const navigate = useNavigate();
-  const titleInputRef = useRef(null);
-  const draftInputRef = useRef(null);
   const [loading, setLoading] = useRecoilState(loadingState);
   const [, setResponse] = useRecoilState(responseState);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const formData = new FormData();
-    formData.append('title', titleInputRef.current.value);
-    formData.append('draft', draftInputRef.current.value);
-    setLoading(true);
-    navigate("/mainloading");
-    
-    try {
-      const response = await API.post('textprocessor/api/generate-article', formData);
-      setResponse(response.data);
-      navigate("/mainoutput");
-      console.log('Server response: ', response.data);
-    } catch (error) {
-      console.log('Error sending data to the server: ', error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <Frame>
@@ -42,9 +21,10 @@ function Feedbackoutput() {
         <TitleBox>
           <img src={logo} alt="Main Logo" style={{width: "15%"}}/>
         </TitleBox>
+        <img src={LoadingComponent} alt="로딩중" width="30%" height="30%" style={{marginLeft:"28vw", marginTop:"10vw"}} />
       </MainBox>
     </Frame>
-  );
+  );``
 }
 
 

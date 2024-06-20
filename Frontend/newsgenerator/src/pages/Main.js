@@ -20,6 +20,7 @@ function Main() {
 
   const [loading, setLoading] = useRecoilState(loadingState);
   const [, setResponse] = useRecoilState(responseState);
+  const [articleType, setArticleType] = useState('');
 
 
 
@@ -75,7 +76,7 @@ function Main() {
         <img src={logo} alt="Main Logo"style={{width: "15%"}}/>
       </TitleBox>
       <div style={{display:"flex", justifyContent:"center"}}>
-      <SubmitForm onSubmit={handleSubmit} enctype="multipart/form-data">
+      <SubmitForm onOptionClick={setArticleType}  onSubmit={handleSubmit} enctype="multipart/form-data">
         <TextBox>
           <TextLabel htmlFor="coverage info">기사 작성에 필요한 취재정보를 입력하세요.</TextLabel>
           <TextForm ref={textInputRef} id="coverage info" required />
@@ -94,7 +95,7 @@ function Main() {
                   onChange = {handleFileChange}
                   />
           </label>
-          <FormOpBtn />
+          <FormOpBtn selectedOption={articleType} onOptionClick={setArticleType}/>
         </BtnBox>      
         <BottomBox>
         <div style={{display: "flex", alignItems:"center"}}>

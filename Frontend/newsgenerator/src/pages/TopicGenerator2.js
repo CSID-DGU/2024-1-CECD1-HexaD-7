@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components'
 import NavBarComponent from '../components/NavBar';
 import logo from '../images/logo.png';
@@ -7,7 +7,9 @@ import { useRecoilState } from 'recoil';
 import {categoryState} from '../api/state';
 
 function TopicGenerator2() {
-  const [categories, setCategories] = useRecoilState(categoryState);
+  const location = useLocation();
+  const { data } = location.state || { data: { message: '', suggested_topics: [] } };
+  const topics = data.suggested_topics[0].split('\n');
   return (
     <Frame>
       <NavBarComponent />
@@ -18,12 +20,13 @@ function TopicGenerator2() {
       </TitleBox>
       <div style={{minHeight:"100%"}}>
         <div style={{ fontSize: '1vw',maxHeight:"2vw", marginLeft:'3vw', marginTop:'1.5vw'}}>
-        {categories.first_category} {categories.second_category}<b style={{fontSize:"1.1vw"}}>{categories.first_category} {'>'} {categories.second_category}</b> 카테고리 기사 작성을 위한 주제 추천 리스트입니다.
+        <b>{data.message}</b>
         </div>
-        <div style={{ fontSize: '1.5vw',minHeight:"100%", display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center"}}>
-            <TopicBox>주제 1번 예시글입니다.</ TopicBox>
-            <TopicBox>주제 1번 예시글입니다.</ TopicBox>
-            <TopicBox>주제 3번 예시글입니다.</ TopicBox>
+        
+        <div style={{ fontSize: '1.5vw',minHeight:"90%", display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center"}}>
+        {topics.map((topic, index) => (
+              <TopicBox key={index}>{topic}</TopicBox>
+            ))}
         </div>
       </div>
       
