@@ -7,11 +7,11 @@ import API from '../api/axios';
 import { useRecoilState } from 'recoil';
 import {categoryState} from '../api/state';
 import submitBtn from '../images/submitBtn.png';
-
+import LoadingComponent from '../images/LoadingComponent.gif'
 function TopicGenerator1() {
   const navigate = useNavigate();
   const [categories, setCategories] = useRecoilState(categoryState);
-  
+  const [loading, setLoading] = useState(false);
   function getOption2BasedOnFirstCategory(first_category){
     if (first_category === '건강정보'){
       return ['건강 일반', '먹거리 건강', '한방'];
@@ -40,6 +40,7 @@ function TopicGenerator1() {
   useEffect( ()=> {
     if (categories.first_category && categories.second_category){
       async function sendData(){
+        setLoading(true);
         try {
           const response = await API.post('topicsuggestion/select-second-category',{
             first_category: categories.first_category,
@@ -118,7 +119,12 @@ function TopicGenerator1() {
             헬스경향 카테고리 분류별 기사작성 주제를 재안해주는 AI 서비스입니다.
         </div>
         <div style={{ fontSize: '1.5vw',minHeight:"100%", display:"flex", flexDirection:"bottom"}}>
-        <TopicFrame /*onSubmit={handleSubmit}*/ enctype="multipart/form-data">
+        {loading?(
+          <LoadingBox>
+            <img src={LoadingComponent} style={{width: "15vw"}}/>
+          </LoadingBox>
+        ):(
+          <TopicFrame enctype="multipart/form-data">
         <div>
 
         <div style={{display:"flex", minHeight: "75%"}}>
@@ -140,6 +146,7 @@ function TopicGenerator1() {
       </div>
          </div>
         </TopicFrame>
+        )}
         </div>
       </div>
       
@@ -149,6 +156,15 @@ function TopicGenerator1() {
   );
 }
 
+const LoadingBox = styled.div`
+  width: 100%;
+  min-height: 100%;
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items:center;
+  padding: 0vw 0vw 10vw 0vw;
+`
 
 
 const StyledLine = styled.hr`

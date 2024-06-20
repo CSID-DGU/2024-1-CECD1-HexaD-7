@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useState, useEffect} from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components'
 import NavBarComponent from '../components/NavBar';
@@ -20,15 +20,15 @@ function TopicGenerator2() {
 
   useEffect(() => {
     return () => {
-      // 페이지를 나갈 때 categoryState를 초기화
-      setCategories({
-        first_category: '',
-        second_category: '',
-        options2: [],
-      });
+    // 페이지를 나갈 때 categoryState를 초기화
+    setCategories({
+    first_category: '',
+    second_category: '',
+    options2: [],
+    });
     };
-  }, [setCategories]);
-
+    }, [setCategories]);
+  
   return (
     <Frame>
       <NavBarComponent />
@@ -55,6 +55,9 @@ function TopicGenerator2() {
   );
 }
 
+const LoadingBox = styled.div`
+
+`
 const TopicBox  =    styled.div`
     font-size: 1.2vw;
     font-weight: bold;
