@@ -8,6 +8,8 @@ import { responseState, loadingState } from '../api/state.js';
 import API from '../api/axios'; 
 import { useRecoilState } from 'recoil';
 import FormOpBtn from '../components/FormOpBtn';
+import feedgeneration from '../images/feedgeneration.png';
+import aigeneration from '../images/aigeneration.png';
 
 function Feedback() {
   const navigate = useNavigate();
@@ -38,7 +40,6 @@ function Feedback() {
     
 
     try {
-
       const response = await API.post('api/feedback/submit-article/', formData);
       setResponse(response.data);
       navigate("/feedbackoutput");
@@ -88,9 +89,21 @@ function Feedback() {
           <div style={{minWidth:"100%", minHeight:"100%", display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", boxSizing:"border-box"}}>
             {res? 
             <ResultFrame>
-            <ResultBox>
+              {selectedButton === 'feedback' ? (
+                  <ResultFeedbackBox>
+                    <img src={feedgeneration} style={{width: "30vw"}}/>
+                    <br />
+                    {"response 받아올 부분"}
+                  </ResultFeedbackBox>
+                ) : (
+                  <ResultArticleBox>
+                    <img src={aigeneration} style={{width: "26vw"}}/>
+                    {"article response 받아올 부분"}
+                  </ResultArticleBox>
+                )}
+            {/* <ResultFeedbackBox>
               {"response 받아올 부분"}
-            </ResultBox>
+            </ResultFeedbackBox> */}
             <BtnBox>
             <FeedbackBtn 
                 color={selectedButton === 'feedback' ? "#0089CF" : "#F5F6FA"}
@@ -113,9 +126,6 @@ function Feedback() {
               <SubmitBtn type="submit">기사 초안 제출하기 →</SubmitBtn>
             </div>
             }
-            
-            {/* <img src={feedback} style={{width: "10vw"}}/>
-            <SubmitBtn type="submit">기사 초안 제출하기 →</SubmitBtn> */}
           </div>
         </form>
       </MainBox>
@@ -149,7 +159,7 @@ const ResultFrame =styled.div`
   display: grid;
   grid-template-columns: 5fr 1fr
 `
-const ResultBox = styled.div`
+const ResultFeedbackBox = styled.div`
   background-color: #FFFFFF;
   font-size: 1.2vw;
   width: 28vw;
@@ -163,6 +173,22 @@ const ResultBox = styled.div`
   word-wrap: break-word; /* 긴 단어 다음라인으로 보내버리기 */
   word-break: break-word; 
 `
+
+const ResultArticleBox = styled.div`
+  background-color: #FFFFFF;
+  font-size: 1.2vw;
+  width: 28vw;
+  height: 25vw;
+  border-radius: 2vw 0vw 2vw 2vw;
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+  border:none;
+  padding: 2vw;
+  overflow-y: auto; 
+  overflow-x: hidden; 
+  word-wrap: break-word; /* 긴 단어 다음라인으로 보내버리기 */
+  word-break: break-word; 
+`
+
 
 
 const TitleInput = styled.input`
