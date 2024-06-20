@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import NavBarComponent from '../components/NavBar';
 import logo from '../images/logo.png';
@@ -11,13 +11,16 @@ import FormOpBtn from '../components/FormOpBtn';
 
 function Feedback() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [title, setTitle] = useState('');
   const [draft, setDraft] = useState('');
   const [articleType, setArticleType] = useState('');  // 추가된 상태
   const [loading, setLoading] = useRecoilState(loadingState);
   const [, setResponse] = useRecoilState(responseState);
   const [selectedButton, setSelectedButton] = useState('feedback');
-  const [res, setRes] = useState(false);
+  const [res, setRes] = useState(true);
+
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData();
@@ -83,13 +86,12 @@ function Feedback() {
             </div>
           </div>
           <div style={{minWidth:"100%", minHeight:"100%", display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", boxSizing:"border-box"}}>
+            {res? 
             <ResultFrame>
             <ResultBox>
               {"response 받아올 부분"}
             </ResultBox>
             <BtnBox>
-            {/* <FeedbackBtn color="#0089CF">AI<br/>피<br/>드<br/>백</FeedbackBtn>
-            <FeedbackBtn color="#F5F6FA">AI<br/>기사<br/>생성<br/>조회</FeedbackBtn> */}
             <FeedbackBtn 
                 color={selectedButton === 'feedback' ? "#0089CF" : "#F5F6FA"}
                 textcolor={selectedButton === 'feedback' ? "white" : "black"} 
@@ -106,6 +108,12 @@ function Feedback() {
               </FeedbackBtn>
             </BtnBox>
             </ResultFrame>
+            :<div>
+              <img src={feedback} style={{width: "10vw"}}/>
+              <SubmitBtn type="submit">기사 초안 제출하기 →</SubmitBtn>
+            </div>
+            }
+            
             {/* <img src={feedback} style={{width: "10vw"}}/>
             <SubmitBtn type="submit">기사 초안 제출하기 →</SubmitBtn> */}
           </div>
@@ -212,6 +220,20 @@ const GuideBanner = styled.a`
   font-size: 1vw;
   color: #0089CF; 
   cursor: pointer;
+`;
+
+const SubmitBtn = styled.button`
+    width: 30vw;
+    height: 4vw;
+    border:none;
+    border-radius: 1vw;
+    font-weight: bold;
+    font-size: 1.5vw;
+    color: white;
+    background-color:#0089CF;
+    box-sizing: border-box;
+    margin-top: 1vw;
+    margin-bottom: 7vw;
 `;
 
 export default Feedback;

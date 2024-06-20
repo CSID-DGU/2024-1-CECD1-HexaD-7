@@ -10,6 +10,7 @@ import FormOpBtn from '../components/FormOpBtn';
 import { responseState, loadingState } from '../api/state.js';
 import API from '../api/axios'; 
 import { useRecoilState } from 'recoil';
+
 function Main() {
   const navigate = useNavigate();
   const [imagePath, setImagePath] = useState(nocheck);
@@ -63,10 +64,6 @@ function Main() {
     }
   };
   
-
-
-
-
   return (
     <Frame>
       <NavBarComponent />
@@ -137,7 +134,6 @@ const Filename = styled.div`
   margin: 0vw 0vw 1vw 0vw;
   box-sizing: border-box; 
 `
-
 const BottomBox = styled.div`
 width: 50vw;
 display: flex;
@@ -178,7 +174,6 @@ const InputFile = styled.input`
   display:none;
   margin: 0vw 0vw 0.5vw 0vw;
 `
-
 const TextLabel = styled.label`
   font-size: 1vw;
   font-weight: bold;
@@ -193,21 +188,18 @@ display: flex;
 flex-directon: column;
 align-items: stretch;
 `
-
 const MainBox = styled.div`
   width: 100%;
   display: grid;
   grid-template-rows: 0.5fr 1.5fr 5fr; // 4개의 행으로 구성, 각 행의 비율 조정
   align-items: stretch; // 수직 방향으로 가운데 정렬
 `
-
 const TitleBox = styled.div`
   width: 100%;
   display: flex;
   align-items:center;
   justify-content:center;
 `
-
 const TextBox = styled.div`
 display:flex;
 flex-direction: column;
@@ -238,7 +230,6 @@ const GuideBanner = styled.a`
   color: #0089CF; 
   cursor: pointer;
 `;
-
 const BtnBox = styled.div`
 width: 50vw;
 display: flex;

@@ -1,15 +1,34 @@
-import React, {useState, useEffect} from 'react'
-import { useLocation } from 'react-router-dom';
+import React, {useEffect} from 'react'
+import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components'
 import NavBarComponent from '../components/NavBar';
 import logo from '../images/logo.png';
 import { useRecoilState } from 'recoil';
 import {categoryState} from '../api/state';
 
+
+
 function TopicGenerator2() {
+  // const location = useLocation();
+  // const { data } = location.state || { data: { message: '', suggested_topics: [] } };
+  // const topics = data.suggested_topics[0].split('\n');
   const location = useLocation();
+  const navigate = useNavigate();
   const { data } = location.state || { data: { message: '', suggested_topics: [] } };
   const topics = data.suggested_topics[0].split('\n');
+  const [, setCategories] = useRecoilState(categoryState);
+
+  useEffect(() => {
+    return () => {
+      // 페이지를 나갈 때 categoryState를 초기화
+      setCategories({
+        first_category: '',
+        second_category: '',
+        options2: [],
+      });
+    };
+  }, [setCategories]);
+
   return (
     <Frame>
       <NavBarComponent />

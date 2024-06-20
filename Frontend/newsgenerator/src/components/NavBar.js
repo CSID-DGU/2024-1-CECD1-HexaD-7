@@ -15,7 +15,8 @@ const NavBarComponent = () => {
     const pathToKeyMap = {
       '/main': 'generatearticle',
       '/feedback': 'feedback',
-      '/topicgenerator1': 'topicgenerator'
+      '/topicgenerator1': 'topicgenerator',
+      '/topicgenerator2' : 'topicgenerator',
     };
     const currentKey = pathToKeyMap[location.pathname];
     if (currentKey) {
