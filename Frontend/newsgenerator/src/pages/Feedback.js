@@ -10,7 +10,7 @@ import { useRecoilState } from 'recoil';
 import FormOpBtn from '../components/FormOpBtn';
 import feedgeneration from '../images/feedgeneration.png';
 import aigeneration from '../images/aigeneration.png';
-
+import Loading2 from '../images/Loading2.gif';
 function Feedback() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -20,7 +20,37 @@ function Feedback() {
   const [loading, setLoading] = useRecoilState(loadingState);
   const [, setResponse] = useRecoilState(responseState);
   const [selectedButton, setSelectedButton] = useState('feedback');
-  const [res, setRes] = useState(true);
+  const [res, setRes] = useState(false);
+  const [feedbackResponse, setFeedbackResponse] = useState('');
+  const [generatedArticleResponse, setGeneratedArticleResponse] = useState('');
+  const [successOneResponse, setSuccessOneResponse] = useState(false);
+  const [secondLoading, setSecondLoading] = useState(false);
+  const [articleId, setArticleId] = useState('');
+  useEffect(() => {
+    if (successOneResponse) {
+      console.log("기사 초안 제출 완료");
+      console.log("기사 id: ", articleId);
+      const fetchFeedbackAndArticle = async () => {
+        setSecondLoading(true);
+        console.log("secondLoading을 true로 설정");
+        try {
+          const feedbackRes = await API.post(`/api/feedback/article-feedback/${articleId}/`);
+          setFeedbackResponse(feedbackRes.data.feedback);
+
+          const articleGenRes = await API.post(`/api/feedback/generate-article/${articleId}/`);
+          setGeneratedArticleResponse(articleGenRes.data.generated_article);
+        } catch (error) {
+          console.log('Error sending data to the server: ', error);
+          alert('Error sending data to the server');
+        } finally {
+          setSecondLoading(false);
+        }
+      };
+
+      fetchFeedbackAndArticle();
+    }
+  }, [successOneResponse, articleId]);
+
 
 
   const handleSubmit = async (event) => {
@@ -40,11 +70,13 @@ function Feedback() {
     
 
     try {
-      const response = await API.post('api/feedback/submit-article/', formData);
+      const response = await API.post('/api/feedback/submit-article/', formData);
       setResponse(response.data);
-      navigate("/feedbackoutput");
+      setRes(true);
       console.log('Server response: ', response.data);
       // 여기에서 API 응답을 alert 창에 표시
+      setSuccessOneResponse(true);
+      setArticleId(response.data.article_id);
       alert(`Message: ${response.data.message}\nArticle ID: ${response.data.article_id}`);
     } catch (error) {
       console.log('Error sending data to the server: ', error);
@@ -93,12 +125,21 @@ function Feedback() {
                   <ResultFeedbackBox>
                     <img src={feedgeneration} style={{width: "30vw"}}/>
                     <br />
-                    {"response 받아올 부분"}
+                    {secondLoading ? 
+                    <div style={{display:"flex", justifyContent:"center", alignItems:"center"}}>
+                    <img src={Loading2} alt="loading"style={{width: "10vw"}}/>
+                    </div>
+                    : feedbackResponse}
                   </ResultFeedbackBox>
                 ) : (
                   <ResultArticleBox>
                     <img src={aigeneration} style={{width: "26vw"}}/>
-                    {"article response 받아올 부분"}
+                    <br />
+                    {secondLoading ? 
+                    <div style={{display:"flex", justifyContent:"center", alignItems:"center"}}>
+                    <img src={Loading2} alt="loading"style={{width: "10vw"}}/>
+                    </div>
+                    : generatedArticleResponse}
                   </ResultArticleBox>
                 )}
             {/* <ResultFeedbackBox>

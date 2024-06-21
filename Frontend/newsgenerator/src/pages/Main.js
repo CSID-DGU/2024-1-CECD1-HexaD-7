@@ -53,10 +53,10 @@ function Main() {
     navigate("/mainloading");
     
     try {
-      const response = await API.post('textprocessor/api/generate-article', formData);
-      setResponse(response.data);
+      const response = await API.post('/textprocessor/generate-article', formData);
+      setResponse(response.data.content);
       navigate("/mainoutput")
-      console.log('Server response: ', response.data);
+      console.log('Server response: ', response.data.content);
     } catch (error) {
       console.log('Error sending data to the server: ', error);
     }finally{
