@@ -1,7 +1,7 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from backend.newsgenerator.savegeneratedarticle.documents import preprocess_and_index
+from backend.newsgenerator.savegeneratedarticle.documents import preprocess_and_index # type: ignore
 from savegeneratedarticle.models import Article
 from .serializers import ArticleSerializer
 from sqlalchemy import create_engine, text  # type: ignore

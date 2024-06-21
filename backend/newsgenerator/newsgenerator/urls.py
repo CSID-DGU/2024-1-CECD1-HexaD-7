@@ -18,11 +18,9 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
-    path('userlogin/', include('userlogin.urls')),
-    path('textprocessor/', include('textprocessor.urls')),
-    path('userlogin/', include('userlogin.urls')), #userlogin 앱의 URL 포함
+     path("admin/", admin.site.urls),
+    path('userlogin/', include('userlogin.urls')),  # userlogin 앱의 URL 포함
+    path('textprocessor/', include('textprocessor.urls')),  # textprocessor 앱의 URL 포함
     path('api/feedback/', include('feedback.urls')),  # feedback 앱의 URL 포함
-    path('userlogin/', include('userlogin.urls')), #userlogin 앱의 URL 포함
-    path('api/feedback/', include('feedback.urls')),  # feedback 앱의 URL 포함
-]
+    path('topicsuggestion/', include('topicsuggestion.urls')) ,
+]   
