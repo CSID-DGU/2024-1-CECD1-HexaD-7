@@ -89,7 +89,7 @@ def article_feedback(request, article_id):
 @api_view(['POST'])  # HTTP 메소드를 POST로 변경, 필요에 따라
 def generate_article(request, article_id):
     try:
-        article = Article.objects.get(id=article_id);
+        article = Article.objects.get(id=article_id)
         feedback = Feedback.objects.filter(article=article).last()
         if not feedback:
             return Response({'message': '피드백이 없음'}, status=status.HTTP_404_NOT_FOUND)

@@ -23,4 +23,5 @@ urlpatterns = [
     path('textprocessor/', include('textprocessor.urls')),  # textprocessor 앱의 URL 포함
     path('api/feedback/', include('feedback.urls')),  # feedback 앱의 URL 포함
     path('topicsuggestion/', include('topicsuggestion.urls')) ,
+    path('articlesimilarity/', include('articlesimilarity.urls')),
 ]   

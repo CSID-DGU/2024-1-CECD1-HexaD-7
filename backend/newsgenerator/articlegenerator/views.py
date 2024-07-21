@@ -158,74 +158,9 @@
 
 #         return similar_articles
 
-from django.shortcuts import get_object_or_404
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework.parsers import MultiPartParser, FormParser
-from rest_framework import status
-from django.http import JsonResponse
-from .serializers import ArticleResponseSerializer
-from articlegenerator.models import Article
-import logging
-from elasticsearch_dsl import Search
+from django.shortcuts import render
+from .models import Post
 
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
-
-class GenerateArticleView(APIView):
-    parser_classes = [MultiPartParser, FormParser]
-
-    def post(self, request, *args, **kwargs):
-        # 하드코딩된 데이터로 테스트
-        title = "Sample Title"
-        content = "This is a sample content used for finding similar articles."
-        format = "Blog"
-        keywords = "sample, content, test"
-        section = "Technology"
-        subsection = "Innovation"
-
-        # Elasticsearch에서 유사 기사 검색
-        similar_articles = self.find_similar_articles(content)
-
-        # 생성된 기사와 유사 기사 정보를 반환하여 선택지를 제시
-        response_data = {
-            "generated_article": {
-                "title": title,
-                "content": content,
-                "keywords": keywords,
-                "format": format,
-                "section": section,
-                "subsection": subsection
-            },
-            "similar_articles": similar_articles,
-        }
-
-        serializer = ArticleResponseSerializer(data=response_data)
-        if serializer.is_valid():
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def find_similar_articles(self, content):
-        # Elasticsearch에서 유사한 content를 찾음
-        s = Search(index="articles").query("more_like_this", fields=["content"], like=content,
-                                           min_term_freq=1, min_doc_freq=1)[:5]
-        response = s.execute()
-
-        similar_articles = []
-        for hit in response:
-            # Elasticsearch에서 얻은 문서 id를 이용하여 MySQL에서 해당 기사를 조회
-            article_id = hit.meta.id
-            article = get_object_or_404(Article, id=article_id)
-            similar_articles.append({
-                'title': article.title,
-                'link': article.link,
-                'content': article.content,
-                'format': article.format,
-                'keywords': article.keywords,
-                'section': article.section,
-                'subsection': article.subsection,
-                'score': hit.meta.score  # 유사도 점수 추가
-            })
-
-        return similar_articles
+def post_iew(request):
+    posts = Post.objects.all()
+    return render(request, 'index.html', {"posts": posts})
