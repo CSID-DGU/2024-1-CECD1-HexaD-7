@@ -82,7 +82,7 @@ const CustomSurvey = () => {
                 fontSize: "0.8vw",
               }}
             >
-              만족도 조사 진행도 {surveyCnt + 1}/3
+              만족도 조사 진행도 {surveyCnt + 1} /3
             </span>
           </div>
         </div>
