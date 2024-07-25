@@ -8,7 +8,6 @@ import {
   surveyCntState,
 } from "../status/atom.js";
 import API from "../api/axios.js";
-import { setSelectionRange } from "@testing-library/user-event/dist/utils/index.js";
 const CustomSurvey = () => {
   const [scores, setScores] = useRecoilState(surveyState);
   const isSurveyComplete = useRecoilValue(isSurveyCompleteState);
@@ -55,7 +54,7 @@ const CustomSurvey = () => {
         </p>
         <br />더 나은 서비스 품질 개선을 위한 사용자 만족도 조사입니다.
         <p style={{ maxHeight: "0px" }}>
-          ⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻
+          ⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻
         </p>
         <p>
           {surveyCnt == 0

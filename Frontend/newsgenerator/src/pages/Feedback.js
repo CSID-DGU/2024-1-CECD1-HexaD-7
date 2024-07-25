@@ -12,6 +12,7 @@ import feedgeneration from "../images/feedgeneration.png";
 import aigeneration from "../images/aigeneration.png";
 import Loading2 from "../images/Loading2.gif";
 import CustomSurvey from "../components/CustomSurvey.js";
+import SubmitBox from "../components/SubmitBox.js";
 function Feedback() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -27,6 +28,11 @@ function Feedback() {
   const [successOneResponse, setSuccessOneResponse] = useState(false);
   const [secondLoading, setSecondLoading] = useState(false);
   const [articleId, setArticleId] = useState("");
+  const [isClosed, setIsClosed] = useState(false);
+
+  const submitButtonClick = () => {
+    setIsClosed(true);
+  };
   useEffect(() => {
     if (successOneResponse) {
       console.log("기사 초안 제출 완료");
@@ -102,6 +108,7 @@ function Feedback() {
       <NavBarComponent />
       <MainBox>
         <CustomSurvey />
+        {isClosed ? null : <SubmitBox submitButtonClick={submitButtonClick} />}
         <GuideBanner>사용자 가이드</GuideBanner>
         <TitleBox>
           <img src={logo} alt="Main Logo" style={{ width: "15%" }} />
@@ -249,7 +256,6 @@ const BtnBox = styled.div`
   display: grid;
   grid-template-rows: 1fr 3fr;
 `;
-
 const FeedbackBtn = styled.div`
   color: ${(props) => props.textcolor};
   font-size: 1vw;
@@ -285,7 +291,6 @@ const ResultFeedbackBox = styled.div`
   word-wrap: break-word; /* 긴 단어 다음라인으로 보내버리기 */
   word-break: break-word;
 `;
-
 const ResultArticleBox = styled.div`
   background-color: #ffffff;
   font-size: 1.2vw;
@@ -300,7 +305,6 @@ const ResultArticleBox = styled.div`
   word-wrap: break-word; /* 긴 단어 다음라인으로 보내버리기 */
   word-break: break-word;
 `;
-
 const TitleInput = styled.input`
   border-radius: 1vw;
   border: none;
@@ -310,7 +314,6 @@ const TitleInput = styled.input`
   box-sizing: border-box;
   padding: 0vw 2vw;
 `;
-
 const ContentInput = styled.textarea`
   box-sizing: border-box;
   padding: 2vw 2vw;
@@ -321,7 +324,6 @@ const ContentInput = styled.textarea`
   width: 30vw;
   height: 20vw;
 `;
-
 const Frame = styled.div`
   width: 95vw;
   height: 50vw;
@@ -330,21 +332,18 @@ const Frame = styled.div`
   flex-directon: column;
   align-items: stretch;
 `;
-
 const MainBox = styled.div`
   width: 100%;
   display: grid;
   grid-template-rows: 0.5fr 1.5fr 5fr; // 4개의 행으로 구성, 각 행의 비율 조정
   align-items: stretch; // 수직 방향으로 가운데 정렬
 `;
-
 const TitleBox = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
 `;
-
 const GuideBanner = styled.a`
   width: 100%;
   background-color: transparent; // 배경색 변경
@@ -357,7 +356,6 @@ const GuideBanner = styled.a`
   color: #0089cf;
   cursor: pointer;
 `;
-
 const SubmitBtn = styled.button`
   width: 30vw;
   height: 4vw;
@@ -371,5 +369,4 @@ const SubmitBtn = styled.button`
   margin-top: 1vw;
   margin-bottom: 7vw;
 `;
-
 export default Feedback;
