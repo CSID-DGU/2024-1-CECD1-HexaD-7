@@ -3,56 +3,74 @@
 
 from django.shortcuts import render 
 from .models import Utf8Article
-#from .search import serach_similar_articles
+from django.views.decorators.csrf import csrf_exempt
+from konlpy.tag import Okt
+import MeCab
+from sklearn.feature_extraction.text import TfidfVectorizer
+from elasticsearch import Elasticsearch
+from newsgenerator.settings import ELASTICSEARCH_DSL
+from .search import db
+import logging
+# MeCab 사전 경로 지정
+# dic_path = 'C:/Program Files/MySQL/MySQL Server 8.0/lib/mecab/dic/ipadic_utf-8'
+# try:
+#     mecab = MeCab.Tagger(f'-d "{dic_path}"')
+#     print("initialized successfully")
+# except RuntimeError as e:
+#     print("Fail: ", e)
+# tfidf_vectorizer = TfidfVectorizer(tokenizer=lambda text: mecab.parse(text).split())
+es = Elasticsearch(ELASTICSEARCH_DSL['default']['hosts'])
+# # mySQL에서 데이터 로딩
+# def post_view(request):
+#     posts = Utf8Article.objects.all()
+#     return render(request, 'index.html', {"posts":posts})
+okt = Okt()
+tfidf_vectorizer = TfidfVectorizer(tokenizer = lambda text: okt.morphs(text))
 
-#from sklearn.feature_extraction.text import TfidfVectorizer
-#import MeCab
+logger = logging.getLogger(__name__)
 
-#from elasticsearch import Elasticsearch
+def initialize_corpus():
+    from .search import db
+    cursor = db.cursor()
+    cursor.execute("SELECT content FROM utf8article")
+    articles = cursor.fetchall()
+    corpus = [article[0] for article in articles]
+    tfidf_vectorizer.fit(corpus)
+    logger.info("Corpus initialized and vectorizer trained.")
 
-#es = Elasticsearch()
+initialize_corpus()
+
+#데이터 학습
 
 
+@csrf_exempt
+def search_articles(request):
+    if request.method == 'POST':
+        try:
+            # 사용자가 index.html에서 제출한 텍스트 데이터 추출
+            input_content = request.POST.get('content', '')
+            # 텍스트를 벡터로 변환해 검색쿼리에 사용
+            input_vector = tfidf_vectorizer.transform([input_content]).toarray()[0]
 
-# mySQL에서 데이터 로딩
-def post_view(request):
-    posts = Utf8Article.objects.all()
-    return render(request, 'index.html', {"posts":posts})
+            response = es.search(
+                index="articles",
+                body={
+                    "query": {
+                        "script_score": {
+                            "query": {"match_all": {}},
+                            "script": {
+                                "source": "cosineSimilarity(params.query_vector, 'vector') + 1.0",
+                                "params": {"query_vector": input_vector}
+                            }
+                        }
+                    },
+                    "size": 5
+                }
+            )
+            results = [(hit['_source']['title'], hit['_source']['content']) for hit in response['hits']['hits']]
+            return render(request, 'index.html', {'results': results})
+        except Exception as e:
+            logger.error("Error processing search request: %s", e)
+            return render(request, 'index.html', {'error': 'Error processing your search request.'})
 
-# 벡터를 elasticsearch에 저장
-
-# articles = TextprocessorArticle.objects.all()
-# from sklearn.feature_extraction.text import TfidfVectorizer
-# import MeCab
-
-# mecab = MeCab.Tagger()
-# def tokenize(text):
-#     return mecab.parse(text).split()
-
-# tfidf_vectorizer = TfidfVectorizer(tokenizer=tokenize)
-# corpus = [article.content for article in articles]
-# tfidf_matrix = tfidf_vectorizer.fit_transform(corpus)
-
-# # 벡터를 Elasticsearch에 저장
-# for i, article in enumerate(articles):
-#     vector = tfidf_matrix[i].toarray()[0].tolist()
-#     es.index(index="articles", id=article.id, body={"content": article.content, "vector": vector})
-
-# def search_similar_articles(input_text):
-#     input_vector = tfidf_vectorizer.transform([input_text]).toarray()[0].tolist()
-#     response = es.search(
-#         index="articles",
-#         body={
-#             "query": {
-#                 "script_score": {
-#                     "query": {"match_all": {}},
-#                     "script": {
-#                         "source": "cosineSimilarity(params.query_vector, 'vector') + 1.0",
-#                         "params": {"query_vector": input_vector}
-#                     }
-#                 }
-#             },
-#             "size": 3
-#         }
-#     )
-#     return [hit["_source"]["content"] for hit in response["hits"]["hits"]]
+    return render(request, 'index.html')

@@ -1,3 +1,26 @@
+
+from django.apps import AppConfig
+from sklearn.feature_extraction.text import TfidfVectorizer
+from konlpy.tag import Okt
+
+class ArticlesimilarityConfig(AppConfig):
+    name = 'articlesimilarity'
+    verbose_name = "Article Similarity App"
+
+    def ready(self):
+        print("Loading data and initializing TF-IDF Vectorizer...")
+        from .search import db
+        
+        cursor = db.cursor()
+        cursor.execute("SELECT content FROM utf8acticle")
+        articles = cursor.fetchall()
+        corpus = [article[0] for article in articles]
+        tokenizer = Okt()
+        tfidf_vectorizer = TfidfVectorizer(tokenizer = lambda text: tokenizer.morphs(text))
+        tfidf_vectorizer.fit(corpus)
+        print("Initialization complete.")
+        
+
 # from django.apps import AppConfig
 # from elasticsearch import Elasticsearch
 # from django.conf import settings

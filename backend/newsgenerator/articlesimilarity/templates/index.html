@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html>
   <head>
     <title>Articles</title>
@@ -15,14 +15,40 @@
       {% endfor %}
     </ul>
   </body>
-</html>
+</html> -->
 
 <!-- <form method="get" action=".">
-    <input type="text" name="q" value="{{ query }}" placeholder="Enter text here...">
-    <button type="submit">Search</button>
+  <input
+    type="text"
+    name="q"
+    value="{{ query }}"
+    placeholder="Enter text here..."
+  />
+  <button type="submit">Search</button>
 </form>
 <ul>
-    {% for content in results %}
-    <li>{{ content }}</li>
-    {% endfor %}
+  {% for content in results %}
+  <li>{{ content }}</li>
+  {% endfor %}
 </ul> -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Article Search</title>
+  </head>
+  <body>
+    <form method="post" action=".">
+      <textarea
+        name="content"
+        placeholder="Enter article content..."
+      ></textarea>
+      <button type="submit">Search</button>
+    </form>
+    <ul>
+      {% for title, content in results %}
+      <li><strong>{{ title }}</strong> - {{ content }}</li>
+      {% endfor %}
+    </ul>
+  </body>
+</html>
