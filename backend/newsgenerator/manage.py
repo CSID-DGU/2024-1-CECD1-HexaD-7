@@ -1,8 +1,12 @@
+# 버전충돌이슈로 mysqlclient => pymysql
+import pymysql
+pymysql.install_as_MySQLdb()
 #!/usr/bin/env python
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
 from dotenv import load_dotenv  # 추가
+
 
 def main():
     """Run administrative tasks."""

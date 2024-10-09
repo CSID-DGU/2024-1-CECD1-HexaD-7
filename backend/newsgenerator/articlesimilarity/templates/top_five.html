@@ -1,0 +1,17 @@
+<!-- top_five.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Top 5 Records</title>
+  </head>
+  <body>
+    <h1>Top 5 Articles</h1>
+    <ul>
+      {% for title in titles %}
+      <li>{{title}}</li>
+      {% endfor %}
+    </ul>
+  </body>
+</html>

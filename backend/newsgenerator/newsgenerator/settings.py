@@ -16,6 +16,8 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 
+
+
 # .env 파일의 경로를 설정합니다.
 env_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env')
 load_dotenv(env_path)
@@ -54,7 +56,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "feedback",
     "topicsuggestion",
-    "articlesimilarity",
+    "articlesimilarity"
 ]
 
 MIDDLEWARE = [
@@ -97,7 +99,7 @@ WSGI_APPLICATION = "newsgenerator.wsgi.application"
 DATABASES = {
     'default':{
         'ENGINE':'django.db.backends.mysql',
-        'NAME': 'articledb',
+        'NAME': 'articlegenerator_db',
         'USER': 'root',
         'PASSWORD': '0000',
         'HOST':'localhost',
