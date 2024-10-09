@@ -4,3 +4,4 @@ node_modules/
 venv/
 .env
 backend/newsgenerator/myenv/
+bfg-1.14.0.jar
