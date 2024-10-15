@@ -159,6 +159,26 @@ function Feedback() {
               boxSizing: "border-box",
             }}
           >
+            <div class="flex gap-3 mr-[9vw] mb-2">
+              <button
+                onClick={() => navigate("/spellcheck")}
+                class="w-[8vw] text-[0.9vw] border-2 bg-blue-200 p-2 hover:bg-blue-300 rounded-lg"
+              >
+                맞춤법 교정
+              </button>
+              <button
+                onClick={() => navigate("/lexicalcorrection")}
+                class="w-[8vw] text-[0.9vw] border-2 bg-blue-200 p-2 hover:bg-blue-300 rounded-lg"
+              >
+                어휘표기 교정
+              </button>
+              <button
+                onClick={() => navigate("/lexicalcorrection")}
+                class="w-[8vw] text-[0.9vw] border-2 bg-blue-200 p-2 hover:bg-blue-300 rounded-lg"
+              >
+                어휘표기 등록
+              </button>
+            </div>
             {res ? (
               <ResultFrame>
                 {selectedButton === "feedback" ? (
@@ -276,7 +296,9 @@ const FeedbackBtn = styled.div`
 `;
 const ResultFrame = styled.div`
   display: grid;
-  grid-template-columns: 5fr 1fr;
+  grid-template-columns: 3fr 1fr;
+  margin-top: 0vw;
+  max-height: 30vw;
 `;
 const ResultFeedbackBox = styled.div`
   background-color: #ffffff;
