@@ -22,7 +22,7 @@ function Feedback() {
   const [loading, setLoading] = useRecoilState(loadingState);
   const [, setResponse] = useRecoilState(responseState);
   const [selectedButton, setSelectedButton] = useState("feedback");
-  const [res, setRes] = useState(false);
+  const [res, setRes] = useState(true);
   const [feedbackResponse, setFeedbackResponse] = useState("");
   const [generatedArticleResponse, setGeneratedArticleResponse] = useState("");
   const [successOneResponse, setSuccessOneResponse] = useState(false);
@@ -107,7 +107,7 @@ function Feedback() {
     <Frame>
       <NavBarComponent />
       <MainBox>
-        <CustomSurvey />
+        {/* <CustomSurvey /> */}
         {isClosed ? null : <SubmitBox submitButtonClick={submitButtonClick} />}
         <GuideBanner>사용자 가이드</GuideBanner>
         <TitleBox>
@@ -220,7 +220,8 @@ function Feedback() {
                     onClick={() => handleButtonClick("feedback")}
                   >
                     AI
-                    <br />피<br />드<br />백
+                    <br />피<br />드<br />백<br />
+                    조<br />회
                   </FeedbackBtn>
                   <FeedbackBtn
                     color={selectedButton === "article" ? "#0089CF" : "#F5F6FA"}
@@ -258,10 +259,10 @@ const BtnBox = styled.div`
 `;
 const FeedbackBtn = styled.div`
   color: ${(props) => props.textcolor};
-  font-size: 1vw;
+  font-size: 0.9vw;
   font-weight: bold;
-  width: 2vw;
-  height: 5vw;
+  width: 3vw;
+  height: 11vw;
   border-radius: 0vw 1vw 1vw 0vw;
   background-color: ${(props) => props.color};
   border: none;
