@@ -22,7 +22,7 @@ function Feedback() {
   const [loading, setLoading] = useRecoilState(loadingState);
   const [, setResponse] = useRecoilState(responseState);
   const [selectedButton, setSelectedButton] = useState("feedback");
-  const [res, setRes] = useState(false);
+  const [res, setRes] = useState(true);
   const [feedbackResponse, setFeedbackResponse] = useState("");
   const [generatedArticleResponse, setGeneratedArticleResponse] = useState("");
   const [successOneResponse, setSuccessOneResponse] = useState(false);
@@ -107,7 +107,7 @@ function Feedback() {
     <Frame>
       <NavBarComponent />
       <MainBox>
-        <CustomSurvey />
+        {/* <CustomSurvey /> */}
         {isClosed ? null : <SubmitBox submitButtonClick={submitButtonClick} />}
         <GuideBanner>사용자 가이드</GuideBanner>
         <TitleBox>
@@ -159,6 +159,26 @@ function Feedback() {
               boxSizing: "border-box",
             }}
           >
+            <div class="flex gap-3 mr-[9vw] mb-2">
+              <button
+                onClick={() => navigate("/spellcheck")}
+                class="w-[8vw] text-[0.9vw] border-2 bg-blue-200 p-2 hover:bg-blue-300 rounded-lg"
+              >
+                맞춤법 교정
+              </button>
+              <button
+                onClick={() => navigate("/lexicalcorrection")}
+                class="w-[8vw] text-[0.9vw] border-2 bg-blue-200 p-2 hover:bg-blue-300 rounded-lg"
+              >
+                어휘표기 교정
+              </button>
+              <button
+                onClick={() => navigate("/lexicalcorrection")}
+                class="w-[8vw] text-[0.9vw] border-2 bg-blue-200 p-2 hover:bg-blue-300 rounded-lg"
+              >
+                어휘표기 등록
+              </button>
+            </div>
             {res ? (
               <ResultFrame>
                 {selectedButton === "feedback" ? (
@@ -220,7 +240,8 @@ function Feedback() {
                     onClick={() => handleButtonClick("feedback")}
                   >
                     AI
-                    <br />피<br />드<br />백
+                    <br />피<br />드<br />백<br />
+                    조<br />회
                   </FeedbackBtn>
                   <FeedbackBtn
                     color={selectedButton === "article" ? "#0089CF" : "#F5F6FA"}
@@ -258,10 +279,10 @@ const BtnBox = styled.div`
 `;
 const FeedbackBtn = styled.div`
   color: ${(props) => props.textcolor};
-  font-size: 1vw;
+  font-size: 0.9vw;
   font-weight: bold;
-  width: 2vw;
-  height: 5vw;
+  width: 3vw;
+  height: 11vw;
   border-radius: 0vw 1vw 1vw 0vw;
   background-color: ${(props) => props.color};
   border: none;
@@ -275,7 +296,9 @@ const FeedbackBtn = styled.div`
 `;
 const ResultFrame = styled.div`
   display: grid;
-  grid-template-columns: 5fr 1fr;
+  grid-template-columns: 3fr 1fr;
+  margin-top: 0vw;
+  max-height: 30vw;
 `;
 const ResultFeedbackBox = styled.div`
   background-color: #ffffff;

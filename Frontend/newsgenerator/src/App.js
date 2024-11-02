@@ -7,6 +7,9 @@ import TopicGenerator1 from "./pages/TopicGenerator1";
 import TopicGenerator2 from "./pages/TopicGenerator2";
 import Feedback from "./pages/Feedback";
 import Feedbackoutput from "./pages/Feedbackoutput";
+import SpellCheck from "./pages/SpellCheck";
+import LexicalCorrection from "./pages/LexicalCorrection";
+import "./tailwind-output.css";
 import {
   RecoilRoot,
   atom,
@@ -28,6 +31,8 @@ function App() {
           <Route path="/feedbackoutput" element={<Feedbackoutput />} />
           <Route path="/topicgenerator1" element={<TopicGenerator1 />} />
           <Route path="/topicgenerator2" element={<TopicGenerator2 />} />
+          <Route path="/spellcheck" element={<SpellCheck />} />
+          <Route path="/lexicalcorrection" element={<LexicalCorrection />} />
         </Routes>
       </BrowserRouter>
     </RecoilRoot>
