@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Article, Feedback, Survey
+from .models import Article, Feedback, VocabularyRule, Survey
 
 class ArticleSerializer(serializers.ModelSerializer):
     class Meta:
@@ -11,6 +11,11 @@ class FeedbackSerializer(serializers.ModelSerializer):
         model = Feedback
         fields = '__all__'
 
+class VocabularyRuleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = VocabularyRule
+        fields = '__all__'
+        
 class SurveySerializer(serializers.ModelSerializer):
     class Meta:
         model = Survey

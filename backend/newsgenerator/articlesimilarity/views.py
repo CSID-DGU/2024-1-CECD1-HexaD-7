@@ -91,7 +91,7 @@ def store_vectors_once(data, ids, tfidf_matrix):
         print("Vectors already stored in Elasticsearch, skipping re-indexing.")
 
 
-# 유사 기사 반환 함수
+#유사 기사 반환 함수
 def show_similarity_aritlce(request):
     # 1) article data 가져오기
     data = ArticleTable.objects.all()

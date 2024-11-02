@@ -1,4 +1,5 @@
-
+# 1. settings.py과 urls.py에서 articlesimilarity 비활성화 (주석처리)
+# 2. settings.py에서 mysql과 elasticsearch 비활성화 (주석처리) 및 마이그레이션
 
 """
 Django settings for newsgenerator project.
@@ -16,18 +17,24 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 
-
-
 # .env 파일의 경로를 설정합니다.
 env_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env')
 load_dotenv(env_path)
 
 GPT_API_KEY = os.getenv('GPT_API_KEY')
+
 TEXT_PROCESSOR_API_KEY = os.getenv('TEXT_PROCESSOR_API_KEY')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# 임시 데이터베이스 설정 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -56,7 +63,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "feedback",
     "topicsuggestion",
-    "articlesimilarity"
+    #"articlesimilarity"
 ]
 
 MIDDLEWARE = [
@@ -94,25 +101,25 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "newsgenerator.wsgi.application"
 
+# 데이터베이스 내용 잠시 주석처리 했습니다
+# #Databases 설정
+# DATABASES = {
+#     'default':{
+#         'ENGINE':'django.db.backends.mysql',
+#         'NAME': 'articlegenerator_db',
+#         'USER': 'root',
+#         'PASSWORD': '0000',
+#         'HOST':'localhost',
+#         'PORT':'3306',
+#     }
+# }
 
-#Databases 설정
-DATABASES = {
-    'default':{
-        'ENGINE':'django.db.backends.mysql',
-        'NAME': 'articlegenerator_db',
-        'USER': 'root',
-        'PASSWORD': '0000',
-        'HOST':'localhost',
-        'PORT':'3306',
-    }
-}
-
-ELASTICSEARCH_DSL = {
-    'default':{
-        'hosts':'https://localhost:9200',
-        'http_auth':('elastic', 'CvqzzSwdo3mKDB9rPcY7')
-    }
-}
+# ELASTICSEARCH_DSL = {
+#     'default':{
+#         'hosts':'https://localhost:9200',
+#         'http_auth':('elastic', 'CvqzzSwdo3mKDB9rPcY7')
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
