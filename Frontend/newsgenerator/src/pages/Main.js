@@ -10,7 +10,7 @@ import FormOpBtn from "../components/FormOpBtn";
 import { responseState, loadingState } from "../api/state.js";
 import API from "../api/axios";
 import { useRecoilState } from "recoil";
-
+import CategoryTable from "../components/ContentCategoryTable.js";
 function Main() {
   const navigate = useNavigate();
   const [imagePath, setImagePath] = useState(nocheck);
@@ -110,11 +110,13 @@ function Main() {
           </SubmitForm>
           <SubmitForm>
             <BottomBox>
+              <CategoryTable />
               <SubmitBtn type="submit">기사 생성</SubmitBtn>
             </BottomBox>
           </SubmitForm>
         </div>
       </MainBox>
+      {/* <CategoryTable /> */}
     </Frame>
   );
 }
