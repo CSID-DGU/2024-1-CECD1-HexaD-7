@@ -11,7 +11,7 @@ import FormOpBtn from "../components/FormOpBtn";
 import feedgeneration from "../images/feedgeneration.png";
 import aigeneration from "../images/aigeneration.png";
 import Loading2 from "../images/Loading2.gif";
-import CustomSurvey from "../components/CustomSurvey.js";
+import resetBtn from "../images/reset.png";
 import SubmitBox from "../components/SubmitBox.js";
 function Feedback() {
   const navigate = useNavigate();
@@ -109,7 +109,12 @@ function Feedback() {
       <MainBox>
         {/* <CustomSurvey /> */}
         {isClosed ? null : <SubmitBox submitButtonClick={submitButtonClick} />}
-        <GuideBanner>사용자 가이드</GuideBanner>
+        <div class="flex justify-between">
+          <button onClick={() => setRes(false)} class="pl-[2vw] text-[2vw]">
+            <img src={resetBtn} class="w-[1.5vw]" />
+          </button>
+          <GuideBanner>사용자 가이드</GuideBanner>
+        </div>
         <TitleBox>
           <img src={logo} alt="Main Logo" style={{ width: "15%" }} />
         </TitleBox>
@@ -159,107 +164,111 @@ function Feedback() {
               boxSizing: "border-box",
             }}
           >
-            <div class="flex gap-3 mr-[9vw] mb-2">
-              <button
-                onClick={() => navigate("/spellcheck")}
-                class="w-[8vw] text-[0.9vw] border-2 bg-blue-200 p-2 hover:bg-blue-300 rounded-lg"
-              >
-                맞춤법 교정
-              </button>
-              <button
-                onClick={() => navigate("/lexicalcorrection")}
-                class="w-[8vw] text-[0.9vw] border-2 bg-blue-200 p-2 hover:bg-blue-300 rounded-lg"
-              >
-                어휘표기 교정
-              </button>
-              <button
-                onClick={() => navigate("/lexicalcorrection")}
-                class="w-[8vw] text-[0.9vw] border-2 bg-blue-200 p-2 hover:bg-blue-300 rounded-lg"
-              >
-                어휘표기 등록
-              </button>
-            </div>
             {res ? (
-              <ResultFrame>
-                {selectedButton === "feedback" ? (
-                  <ResultFeedbackBox>
-                    <img src={feedgeneration} style={{ width: "30vw" }} />
-                    <br />
-                    {secondLoading ? (
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                        }}
-                      >
-                        <img
-                          src={Loading2}
-                          alt="loading"
-                          style={{ width: "10vw" }}
-                        />
-                      </div>
-                    ) : (
-                      feedbackResponse
-                    )}
-                  </ResultFeedbackBox>
-                ) : (
-                  <ResultArticleBox>
-                    <img src={aigeneration} style={{ width: "26vw" }} />
-                    <br />
-                    {secondLoading ? (
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                        }}
-                      >
-                        <img
-                          src={Loading2}
-                          alt="loading"
-                          style={{ width: "10vw" }}
-                        />
-                      </div>
-                    ) : (
-                      generatedArticleResponse
-                    )}
-                  </ResultArticleBox>
-                )}
-                {/* <ResultFeedbackBox>
+              <>
+                <div class="flex gap-3 mr-[9vw] mb-2">
+                  <button
+                    onClick={() => navigate("/spellcheck")}
+                    class="w-[8vw] text-[0.9vw] border-2 bg-blue-200 p-2 hover:bg-blue-300 rounded-lg"
+                  >
+                    맞춤법 교정
+                  </button>
+                  <button
+                    onClick={() => navigate("/lexicalcorrection")}
+                    class="w-[8vw] text-[0.9vw] border-2 bg-blue-200 p-2 hover:bg-blue-300 rounded-lg"
+                  >
+                    어휘표기 교정
+                  </button>
+                  <button
+                    onClick={() => navigate("/registernotation")}
+                    class="w-[8vw] text-[0.9vw] border-2 bg-blue-200 p-2 hover:bg-blue-300 rounded-lg"
+                  >
+                    어휘표기 등록
+                  </button>
+                </div>
+                <ResultFrame>
+                  {selectedButton === "feedback" ? (
+                    <ResultFeedbackBox>
+                      <img src={feedgeneration} style={{ width: "30vw" }} />
+                      <br />
+                      {secondLoading ? (
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                          }}
+                        >
+                          <img
+                            src={Loading2}
+                            alt="loading"
+                            style={{ width: "10vw" }}
+                          />
+                        </div>
+                      ) : (
+                        feedbackResponse
+                      )}
+                    </ResultFeedbackBox>
+                  ) : (
+                    <ResultArticleBox>
+                      <img src={aigeneration} style={{ width: "26vw" }} />
+                      <br />
+                      {secondLoading ? (
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                          }}
+                        >
+                          <img
+                            src={Loading2}
+                            alt="loading"
+                            style={{ width: "10vw" }}
+                          />
+                        </div>
+                      ) : (
+                        generatedArticleResponse
+                      )}
+                    </ResultArticleBox>
+                  )}
+                  {/* <ResultFeedbackBox>
               {"response 받아올 부분"}
             </ResultFeedbackBox> */}
-                <BtnBox>
-                  <FeedbackBtn
-                    color={
-                      selectedButton === "feedback" ? "#0089CF" : "#F5F6FA"
-                    }
-                    textcolor={
-                      selectedButton === "feedback" ? "white" : "black"
-                    }
-                    onClick={() => handleButtonClick("feedback")}
-                  >
-                    AI
-                    <br />피<br />드<br />백<br />
-                    조<br />회
-                  </FeedbackBtn>
-                  <FeedbackBtn
-                    color={selectedButton === "article" ? "#0089CF" : "#F5F6FA"}
-                    textcolor={
-                      selectedButton === "feedback" ? "black" : "white"
-                    }
-                    onClick={() => handleButtonClick("article")}
-                  >
-                    AI
-                    <br />
-                    기사
-                    <br />
-                    생성
-                    <br />
-                    조회
-                  </FeedbackBtn>
-                </BtnBox>
-              </ResultFrame>
+                  <BtnBox>
+                    <FeedbackBtn
+                      color={
+                        selectedButton === "feedback" ? "#0089CF" : "#F5F6FA"
+                      }
+                      textcolor={
+                        selectedButton === "feedback" ? "white" : "black"
+                      }
+                      onClick={() => handleButtonClick("feedback")}
+                    >
+                      AI
+                      <br />피<br />드<br />백<br />
+                      조<br />회
+                    </FeedbackBtn>
+                    <FeedbackBtn
+                      color={
+                        selectedButton === "article" ? "#0089CF" : "#F5F6FA"
+                      }
+                      textcolor={
+                        selectedButton === "feedback" ? "black" : "white"
+                      }
+                      onClick={() => handleButtonClick("article")}
+                    >
+                      AI
+                      <br />
+                      기사
+                      <br />
+                      생성
+                      <br />
+                      조회
+                    </FeedbackBtn>
+                  </BtnBox>
+                </ResultFrame>
+              </>
             ) : (
               <div>
                 <img src={feedback} style={{ width: "10vw" }} />
