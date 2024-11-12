@@ -22,7 +22,6 @@ env_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env')
 load_dotenv(env_path)
 
 GPT_API_KEY = os.getenv('GPT_API_KEY')
-
 TEXT_PROCESSOR_API_KEY = os.getenv('TEXT_PROCESSOR_API_KEY')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
