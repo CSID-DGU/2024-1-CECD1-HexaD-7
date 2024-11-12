@@ -9,6 +9,7 @@ import Feedback from "./pages/Feedback";
 import Feedbackoutput from "./pages/Feedbackoutput";
 import SpellCheck from "./pages/SpellCheck";
 import LexicalCorrection from "./pages/LexicalCorrection";
+import RegisterNotation from "./pages/RegisterNotation";
 import "./tailwind-output.css";
 import {
   RecoilRoot,
@@ -33,6 +34,7 @@ function App() {
           <Route path="/topicgenerator2" element={<TopicGenerator2 />} />
           <Route path="/spellcheck" element={<SpellCheck />} />
           <Route path="/lexicalcorrection" element={<LexicalCorrection />} />
+          <Route path="/registernotation" element={<RegisterNotation />} />
         </Routes>
       </BrowserRouter>
     </RecoilRoot>

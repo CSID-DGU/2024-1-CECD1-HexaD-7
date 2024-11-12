@@ -10,7 +10,7 @@ import FormOpBtn from "../components/FormOpBtn";
 import { responseState, loadingState } from "../api/state.js";
 import API from "../api/axios";
 import { useRecoilState } from "recoil";
-
+import CategoryTable from "../components/ContentCategoryTable.js";
 function Main() {
   const navigate = useNavigate();
   const [imagePath, setImagePath] = useState(nocheck);
@@ -72,44 +72,20 @@ function Main() {
         <TitleBox>
           <img src={logo} alt="Main Logo" style={{ width: "15%" }} />
         </TitleBox>
-        <div style={{ display: "flex", justifyContent: "center" }}>
+        <div class="flex flex-row gap-6 justify-center">
           <SubmitForm
             onOptionClick={setArticleType}
             onSubmit={handleSubmit}
             enctype="multipart/form-data"
           >
-            <TextBox>
-              <TextLabel htmlFor="coverage info">
-                기사 작성에 필요한 취재정보를 입력하세요.
-              </TextLabel>
-              <TextForm ref={textInputRef} id="coverage info" required />
-            </TextBox>
-            <BtnBox>
-              <label htmlFor="fileInput">
-                <Filename>
-                  {fileName}
-                  <span>
-                    <img
-                      src={clip}
-                      style={{ width: "1.2vw", margin: "0vw 0.5vw" }}
-                    />
-                  </span>
-                </Filename>
-                <InputFile
-                  ref={fileInputRef}
-                  type="file"
-                  id="fileInput"
-                  name="userFile"
-                  accept=".jpg, .jpeg, .png"
-                  onChange={handleFileChange}
-                />
-              </label>
-              <FormOpBtn
-                selectedOption={articleType}
-                onOptionClick={setArticleType}
-              />
-            </BtnBox>
-            <BottomBox>
+            <div class="flex flex-col w-[100%] justify-center align-top">
+              <TextBox>
+                <TextLabel htmlFor="coverage info">
+                  기사 작성에 필요한 제목과 보도자료를 입력하세요.
+                </TextLabel>
+                <TitleForm class="h-[2vw]" />
+                <TextForm ref={textInputRef} id="coverage info" required />
+              </TextBox>
               <div style={{ display: "flex", alignItems: "center" }}>
                 <TextLabel htmlFor="factcheck">
                   팩트체크 하이라이팅 여부
@@ -130,11 +106,17 @@ function Main() {
                   />
                 </label>
               </div>
+            </div>
+          </SubmitForm>
+          <SubmitForm>
+            <BottomBox>
+              <CategoryTable />
               <SubmitBtn type="submit">기사 생성</SubmitBtn>
             </BottomBox>
           </SubmitForm>
         </div>
       </MainBox>
+      {/* <CategoryTable /> */}
     </Frame>
   );
 }
@@ -177,8 +159,8 @@ const SubmitBtn = styled.button`
   box-sizing: border-box;
 `;
 const SubmitForm = styled.form`
-  width: 60vw;
-  height: 30vw;
+  width: 30vw;
+  height: 35vw;
   background-color: #ffffff;
   box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.25);
   border-radius: 0.5vw;
@@ -189,11 +171,10 @@ const SubmitForm = styled.form`
   align-items: center;
   padding: 3vw 0vw 0vw 1vw;
   box-sizing: border-box;
+  margin-bottom: 3vw;
+  padding-bottom: 2vw;
 `;
-const InputFile = styled.input`
-  display: none;
-  margin: 0vw 0vw 0.5vw 0vw;
-`;
+
 const TextLabel = styled.label`
   font-size: 1vw;
   font-weight: bold;
@@ -223,15 +204,24 @@ const TitleBox = styled.div`
 const TextBox = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: left;
   justify-content: center;
   box-sizing: border-box;
   width: 45vw;
-  height: 30vw;
+  height: 100%;
+`;
+const TitleForm = styled.input`
+  width: 27vw;
+  height: 3vw;
+  padding: 1vw;
+  margin-bottom: 1vw;
+  border-radius: 10px;
+  border-style: none;
+  background-color: #f5f6fa;
+  box-sizing: border-box;
 `;
 const TextForm = styled.textarea`
-  width: 100%;
-  height: 12vw;
+  width: 27vw;
+  height: 23vw;
   padding: 1vw;
   border-radius: 10px;
   border-style: none;
@@ -249,15 +239,6 @@ const GuideBanner = styled.a`
   font-size: 1vw;
   color: #0089cf;
   cursor: pointer;
-`;
-const BtnBox = styled.div`
-  width: 50vw;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  padding: 2vw 2vw 0vw 2vw;
-  box-sizing: border-box;
-  margin: 0 auto; // 자동 마진을 사용하여 좌우 중앙 정렬
 `;
 
 export default Main;
