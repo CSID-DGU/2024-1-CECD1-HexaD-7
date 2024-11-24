@@ -1,15 +1,15 @@
-# from django.urls import path
-# from .views import GenerateArticle, TextReceiver
-
-# urlpatterns = [
-#     path('api/generate-article', GenerateArticle.as_view(), name='generate-article'),
-#     path('api/text-receiver', TextReceiver.as_view(), name='text_receiver'),
-# ]
-
 from django.urls import path
-from .views import GenerateArticle  # 수정된 클래스명을 가져옵니다.
+from .views import Step1View, Step2View, Step3View
 
 urlpatterns = [
-    path('generate-article', GenerateArticle.as_view(), name='generate-article'),
-    #path('api/text-receiver', TextReceiver.as_view(), name='text_receiver'),
+    path('generate/step1/', Step1View.as_view(), name='step1'),
+    path('generate/step2/', Step2View.as_view(), name='step2'),
+    path('generate/step3/', Step3View.as_view(), name='step3'),
 ]
+
+# from django.urls import path
+# from .views import GenerateArticle
+
+# urlpatterns = [
+#     path('generate-article', GenerateArticle.as_view(), name='generate-article'),
+# ]
