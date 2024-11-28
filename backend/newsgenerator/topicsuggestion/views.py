@@ -33,7 +33,7 @@ class SelectSecondCategory(APIView):
                 "Content-Type": "application/json"
             },            
             json={
-                "model": "gpt-3.5-turbo",
+                "model": "gpt-4",
                 "messages": [
                     {"role": "system", "content": "You are a helpful assistant. Provide only the article topics in Korean without any additional explanation or details."},
                     {"role": "user", "content": f"'{first_category}' 내의 '{second_category}' 카테고리와 관련된 최근 핫한 기사 주제 3가지를 추천해줘."}
