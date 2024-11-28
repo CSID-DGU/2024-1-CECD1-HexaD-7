@@ -5,63 +5,87 @@ import NavBarComponent from "../components/NavBar";
 import logo from "../images/logo.png";
 import check from "../images/check.png";
 import nocheck from "../images/nocheck.png";
-import clip from "../images/clip.png";
-import FormOpBtn from "../components/FormOpBtn";
-import { responseState, loadingState } from "../api/state.js";
+import CategoryTable from "../components/ContentCategoryTable.js";
+import FormatTable from "../components/FormatTable.js";
 import API from "../api/axios";
 import { useRecoilState } from "recoil";
-import CategoryTable from "../components/ContentCategoryTable.js";
+import { responseState, loadingState } from "../api/state.js";
+
 function Main() {
   const navigate = useNavigate();
   const [imagePath, setImagePath] = useState(nocheck);
-  const [fileName, setFileName] = useState("파일을 선택해주세요.");
   const textInputRef = useRef(null);
-  const fileInputRef = useRef(null);
   const factCheckRef = useRef(null);
+  const [step, setStep] = useState(1);
 
   const [loading, setLoading] = useRecoilState(loadingState);
   const [, setResponse] = useRecoilState(responseState);
-  const [articleType, setArticleType] = useState("");
+  const [title, setTitle] = useState("");
+
+  const handlePrev = () => {
+    setStep((prev) => Math.max(prev - 1, 1)); // 최소값 1로 제한
+  };
+
+  const handleNext = () => {
+    setStep((prev) => Math.min(prev + 1, 2)); // 최대값 2로 제한
+  };
 
   const handleCheckboxChange = (event) => {
     setImagePath(event.target.checked ? check : nocheck);
   };
 
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      setFileName(file.name);
-    } else {
-      setFileName("파일을 선택해주세요.");
-    }
-  };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const formData = new FormData();
-
-    formData.append("research_info", textInputRef.current.value);
-    if (fileInputRef.current.files[0]) {
-      formData.append("file", fileInputRef.current.files[0]);
-    }
-    formData.append("article_type", "스트레이트기사");
-    formData.append("fact_check_highlight", factCheckRef.current.checked);
     setLoading(true);
     navigate("/mainloading");
 
     try {
       const response = await API.post(
-        "/textprocessor/generate-article",
-        formData
+        "http://127.0.0.1:8000/textprocessor/generate/step1/",
+        {
+          title: title,
+          source_data: textInputRef.current.value,
+          content_category: "Health",
+          fact_check_highlight: factCheckRef.current.checked,
+          format_category: {
+            literary: "Informative",
+            structure: "Standard",
+            style: "Formal",
+          },
+        }
       );
-      setResponse(response.data.content);
+
+      const articleId = response.data.article_id;
+      setResponse({ status: response.data.status, article_id: articleId });
       navigate("/mainoutput");
-      console.log("Server response: ", response.data.content);
+      console.log("Server response: ", response.data);
     } catch (error) {
       console.log("Error sending data to the server: ", error);
     } finally {
       setLoading(false);
     }
+  };
+
+  const renderStepContent = () => {
+    if (step === 1) {
+      return (
+        <div className="flex flex-col gap-2 w-[25vw] h-[30vw]">
+          <p className="text-[1vw]">
+            <b>내용 카테고리 택1</b>
+          </p>
+          <CategoryTable />
+        </div>
+      );
+    } else if (step === 2) {
+      return (
+        <div className="flex flex-col gap-2 w-[25vw] h-[30vw]">
+          <p className="text-[1vw]">
+            <b>형식 카테고리 택1</b>
+          </p>
+          <FormatTable />
+        </div>
+      );
+    } else return null;
   };
 
   return (
@@ -72,18 +96,16 @@ function Main() {
         <TitleBox>
           <img src={logo} alt="Main Logo" style={{ width: "15%" }} />
         </TitleBox>
-        <div class="flex flex-row gap-6 justify-center">
-          <SubmitForm
-            onOptionClick={setArticleType}
-            onSubmit={handleSubmit}
-            enctype="multipart/form-data"
-          >
-            <div class="flex flex-col w-[100%] justify-center align-top">
+        <div className="flex flex-row gap-6 justify-center">
+          <SubmitForm onSubmit={handleSubmit}>
+            <div className="flex flex-col w-[100%] justify-center align-top">
               <TextBox>
-                <TextLabel htmlFor="coverage info">
-                  기사 작성에 필요한 제목과 보도자료를 입력하세요.
-                </TextLabel>
-                <TitleForm class="h-[2vw]" />
+                <TextLabel>제목</TextLabel>
+                <TitleForm
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                />
+                <TextLabel>보도자료</TextLabel>
                 <TextForm ref={textInputRef} id="coverage info" required />
               </TextBox>
               <div style={{ display: "flex", alignItems: "center" }}>
@@ -106,21 +128,59 @@ function Main() {
                   />
                 </label>
               </div>
+              <SubmitBtn type="submit">기사 생성</SubmitBtn>
             </div>
           </SubmitForm>
           <SubmitForm>
             <BottomBox>
-              <CategoryTable />
-              <SubmitBtn type="submit">기사 생성</SubmitBtn>
+              <div class="flex flex-col">
+                {renderStepContent()}
+                <div class="flex flex-row space-evenly justify-center gap-6 mt-[1vw] w-[100%]">
+                  {
+                    <StepButton
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handlePrev();
+                      }}
+                    >
+                      Prev
+                    </StepButton>
+                  }
+                  {
+                    <StepButton
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleNext();
+                      }}
+                    >
+                      Next
+                    </StepButton>
+                  }
+                </div>
+              </div>
             </BottomBox>
           </SubmitForm>
         </div>
       </MainBox>
-      {/* <CategoryTable /> */}
     </Frame>
   );
 }
 
+const StepButton = styled.button`
+  width: 8vw;
+  height: 2.5vw;
+  background-color: #f5f6fa;
+  color: #0089cf;
+  font-weight: bold;
+  font-size: 1vw;
+  border: 1px solid #0089cf;
+  border-radius: 2vw;
+  cursor: pointer;
+  &:hover {
+    background-color: #0089cf;
+    color: white;
+  }
+`;
 const Filename = styled.div`
   width: 100%;
   display: flex;
@@ -139,8 +199,7 @@ const Filename = styled.div`
 const BottomBox = styled.div`
   width: 50vw;
   display: flex;
-  flex-direction: row;
-  //align-items:flex-end;
+  flex-direction: col;
   justify-content: space-between;
   padding: 0vw 2vw 1vw 2vw;
   box-sizing: border-box;
@@ -192,8 +251,8 @@ const Frame = styled.div`
 const MainBox = styled.div`
   width: 100%;
   display: grid;
-  grid-template-rows: 0.5fr 1.5fr 5fr; // 4개의 행으로 구성, 각 행의 비율 조정
-  align-items: stretch; // 수직 방향으로 가운데 정렬
+  grid-template-rows: 0.5fr 1.5fr 5fr;
+  align-items: stretch;
 `;
 const TitleBox = styled.div`
   width: 100%;
@@ -220,8 +279,9 @@ const TitleForm = styled.input`
   box-sizing: border-box;
 `;
 const TextForm = styled.textarea`
+  margin-bottom: 2vw;
   width: 27vw;
-  height: 23vw;
+  height: 15vw;
   padding: 1vw;
   border-radius: 10px;
   border-style: none;
@@ -230,7 +290,7 @@ const TextForm = styled.textarea`
 `;
 const GuideBanner = styled.a`
   width: 100%;
-  background-color: transparent; // 배경색 변경
+  background-color: transparent;
   align-items: right;
   padding: 20px;
   box-sizing: border-box;
