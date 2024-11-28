@@ -262,7 +262,7 @@ function CategoryTable() {
 const Table = styled.table`
   border-collapse: collapse;
   width: 25vw;
-  max-height: 30vw;
+  max-height: 27vw;
   overflow-y: auto;
   display: block;
   font-size: 1vw;
