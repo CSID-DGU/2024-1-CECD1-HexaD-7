@@ -1,6 +1,6 @@
 import React from "react";
 
-const NotationBox = ({ Notation, onClick, onDelete }) => {
+const NotationBox = ({ Notation, onClick, onDelete, onUpdate }) => {
   return (
     <div
       onClick={onClick}
@@ -26,6 +26,15 @@ const NotationBox = ({ Notation, onClick, onDelete }) => {
         <div className="flex items-center justify-between p-1">
           <div className="text-blue-500 bg-blue-100 px-2 rounded font-bold">
             {Notation.pos}
+          </div>
+          <div
+            className="ml-[16vw]"
+            onClick={(e) => {
+              e.stopPropagation(); // 이벤트 전파 막기
+              onUpdate(); // 삭제 함수 호출
+            }}
+          >
+            수정하기
           </div>
           <p> </p>
         </div>

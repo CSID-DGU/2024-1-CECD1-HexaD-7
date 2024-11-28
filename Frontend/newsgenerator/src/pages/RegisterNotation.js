@@ -204,7 +204,10 @@ function RegisterNotation() {
       </MainBox>
 
       {isClickedDetail && (
-        <NotationDetailBox Notation={detailNotation} onClose={closeDetailBox} />
+        <NotationDetailBox
+          Notation={detailNotation}
+          onClose={() => setIsClickedDetail(false)}
+        />
       )}
       {isEditing && editingNotation && (
         <RegisterNotationForm

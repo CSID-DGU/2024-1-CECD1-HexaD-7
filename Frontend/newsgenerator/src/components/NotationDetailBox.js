@@ -1,21 +1,22 @@
 import React from "react";
 import styled from "styled-components";
 
-const NotationDetailBox = ({ Notation }) => {
+const NotationDetailBox = ({ Notation, onClose }) => {
   return (
     <SubmitForm class="border-[0.1vw] border-gray-300 px-1 pr-2 bg-white">
-      <b class="text-right cursor-pointer w-[100%] text-right">x</b>
+      <b
+        class="text-right cursor-pointer w-[100%] text-right"
+        onClick={onClose}
+      >
+        x
+      </b>
       <div class="font-bold">수정 전 표기</div>
       <div class="w-[100%] flex justify-between p-1  h-auto bg-gray-100 rounded mb-[1.5vw]">
-        <b>
-          {Notation.input_text.map((item, index) =>
-            index === Notation.input_text.length - 1 ? item : item + " / "
-          )}
-        </b>
+        <b>{Notation.target_word}</b>
       </div>
       <div class="font-bold">수정 후 표기</div>
       <div class="w-[100%] flex justify-between p-1  h-auto bg-gray-100 rounded mb-[1.5vw]">
-        <b>{Notation.output_text}</b>
+        <b>{Notation.replacement_word}</b>
       </div>
       <div class="flex flex-row mb-[1.5vw]">
         <b>품사</b>
@@ -27,7 +28,10 @@ const NotationDetailBox = ({ Notation }) => {
       <div class="flex items-center justify-between p-1"></div>
       <div class="font-bold">설명</div>
       <div class="w-[100%] flex justify-between p-1  h-auto bg-gray-100 rounded">
-        <b>{Notation.description}</b>
+        <b>
+          {Notation.target_word}(을)를 {Notation.replacement_word}(으)로
+          교체합니다.
+        </b>
       </div>
     </SubmitForm>
   );
