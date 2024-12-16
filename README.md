@@ -51,6 +51,32 @@
      ```bash
      pip install -r requirements.txt
      ```
+     - **.env**
+    
+    ```bash
+    from dotenv import load_dotenv
+    import os
+    
+    # .env 파일 로드
+    load_dotenv()
+    
+    # 환경 변수 사용
+    GPT_API_KEY= ''
+    ```
+    
+- **.gitignore**
+    
+    ```bash
+    *.pyc
+    __pycache__/
+    node_modules/
+    venv/
+    .env
+    backend/newsgenerator/myenv/
+    bfg-1.14.0.jar
+    db.sqlite3
+    
+    ```
 4. **실행 준비**:
    **Frontend**
    **development server 실행**:
